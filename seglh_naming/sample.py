@@ -13,7 +13,7 @@ SAMPLE_REGEX = (
     r'_(Pan[^_\.]+)'  # pan number
     r'(?:_(R[A-Z0-9]{2}))?'  # ODS code
     r'(?:_(S\d+)_(R\d))?'  # samplesheet number and read number
-    r'(?:_([0-9]{3}))?'  # demultiplex lane
+    r'(?:_([0-9]{3}))?'  # demultiplex stable number
     r'(.*)$'  # can be followed by more (eg from a filename)
 )
 
@@ -46,7 +46,7 @@ class Sample:
             self.ods = m.group(9)
             self.samplesheetindex = m.group(10)
             self.readnumber = m.group(11)
-            self.lane = m.group(12)
+            self.stable = m.group(12)
             self.rest = m.group(13)
 
         # validate completeness (at least one secondary identifier)
@@ -88,7 +88,7 @@ class Sample:
             self.ods,
             self.samplesheetindex,
             self.readnumber,
-            self.lane
+            self.stable
         ]))+self.rest
 
     def file_extension(self, include_compression=True):
@@ -282,18 +282,18 @@ class Sample:
         self._readnumber = value
 
     @property
-    def lane(self):
+    def stable(self):
         '''
-        Lane Number from demultiplexing
-            three digit number
+        Stable number from demultiplexing
+            001
         '''
-        return self._lane
+        return self._stable
 
-    @lane.setter
-    def lane(self, value):
-        if value and not re.match(r'\d{3}$', value):
-            raise ValueError("Lane number invalid ({})".format(value))
-        self._lane = value
+    @stable.setter
+    def stable(self, value):
+        if value and not re.match(r'001$', value):
+            raise ValueError("Number invalid ({})".format(value))
+        self._stable = value
 
     @property
     def rest(self):
