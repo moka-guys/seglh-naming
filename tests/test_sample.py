@@ -9,9 +9,10 @@ def valid_samples():
         "NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1",
         "NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001",
         "NGS123_12_382398_JD_M_VCP0R33_Pan0000_RJZ_S12_R1",
-        "NGS123_12_382398_JD_M_VCP0R33_Pan0000",
+        "NGS123_12_382398_JD_M_VCP0R33_Pan0000.fasta",
         "NGS123_12_382398_PT324B_VCP0R33_Pan0000_S12_R1"
     ]
+
 
 @pytest.fixture
 def invalid_samples():
@@ -23,6 +24,20 @@ def invalid_samples():
         "NGS123_12_382398_PT324B_Pn0000_S12_R1",
         "NGS123_12_382398_Pan0000_S12_R1",
         "ONC123_00_234234_FG3243_Pan0000.realign.bam"
+    ]
+
+
+@pytest.fixture
+def constituents():
+    return [
+        ("NGS123_12_382398_SECND_VC033_Pan0000_S12", 'panelnumber', 'Pan0000'),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1", 'readnumber', 'R1'),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000", 'panelname', 'VCP0R33'),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_RJZ_S12_R1", 'ods', 'RJZ'),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_RJZ", 'ods', 'RJZ'),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000.fasta", 'initials', 'JD'),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000.fasta", 'sex', 'M'),
+        ("NGS123_12_382398_PT324B_VCP0R33_Pan0000_S12_R1", 'sex', None)
     ]
 
 
@@ -45,6 +60,8 @@ def file_names():
          True, 'vcf'),
         ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.haplotyper.vcf",
          False, 'vcf'),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000.haplotyper.vcf",
+         False, 'vcf'),
     ]
 
 
@@ -56,6 +73,11 @@ def test_invalid_samples(invalid_samples):
 
 def test_valid_samples(valid_samples):
     assert all([Sample(s) for s in valid_samples])
+
+
+def test_constituents(constituents):
+    for fi, c, result in constituents:
+        assert getattr(Sample(fi), c) == result
 
 
 def test_sample_reconstruction(valid_samples):

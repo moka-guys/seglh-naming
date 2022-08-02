@@ -10,10 +10,10 @@ SAMPLE_REGEX = (
     r'([^_]+)_(\d+)_([^_]+)'  # Library_number_DNA
     r'(?:_([^_]{4,}))?(?:_([^_]{2}))?(?:_([MFU]{1}))?'  # secondary identifiers
     r'_([^_]+)'  # Human readable panel name
-    r'_(Pan[^_]+)'  # pan number
+    r'_(Pan[^_\.]+)'  # pan number
     r'(?:_(R[A-Z0-9]{2}))?'  # ODS code
     r'(?:_(S\d+)_(R\d))?'  # samplesheet number and read number
-    r'(?:_(001))?'  # demultiplex lane
+    r'(?:_([0-9]{3}))?'  # demultiplex lane
     r'(.*)$'  # can be followed by more (eg from a filename)
 )
 
@@ -88,9 +88,8 @@ class Sample:
             self.ods,
             self.samplesheetindex,
             self.readnumber,
-            self.lane,
-            self.rest
-        ]))
+            self.lane
+        ]))+self.rest
 
     def file_extension(self, include_compression=True):
         '''extracts the file extension if any'''
@@ -302,10 +301,11 @@ class Sample:
         Remainder of the parsed string (e.g. rest of filename)
             a string of any length
         '''
-        return self._rest
+        return self._rest or ''
 
     @rest.setter
     def rest(self, value):
         if value and not re.match(r'[\w\._]*$', value):
-            raise ValueError("Unrecognised characters in parsed name ({})".format(value))
+            raise ValueError("Unrecognised characters in parsed name ({})"
+                             .format(value))
         self._rest = value
