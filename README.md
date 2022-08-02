@@ -14,6 +14,27 @@ After installation the package can be used to validate the folling naming scheme
 
 ### Sample
 
+The sample names are structured as follows and can be accessed by the correponding class property.
+
+```
+NGS123_12_382398_P9392B_JD_M_VCP0R33_Pan0000_S12_R1_001.realigned.bam
++===== += +===== +===== += + +====== +====== +== += +==+=============
+|      |  |      |      |  | |       |       |   |  |  |
+|      |  |      |      |  | |       |       |   |  |  +- rest (trailing string, optional)
+|      |  |      |      |  | |       |       |   |  +---- stable (not informative, optional)
+|      |  |      |      |  | |       |       |   +------- readnumber (optional)
+|      |  |      |      |  | |       |       +----------- samplesheetindex (optional)
+|      |  |      |      |  | |       +------------------- panelnumber (Pan Number)
+|      |  |      |      |  | +--------------------------- panelname (Human readable Pan number)
+|      |  |      |      |  +----------------------------- sex (optional)
+|      |  |      |      +-------------------------------- initials (secondary identifier, optional)
+|      |  |      +--------------------------------------- id2 (secondary identifier, optional)
+|      |  +---------------------------------------------- id1 (DNA number)
+|      +------------------------------------------------- samplecount (number in batch/library)
++-------------------------------------------------------- libraryprep (library name)
+```
+
+
 #### Validation
 Validate a sample name or file name for conformity (formatting, required identifiers).
 If validation fails, a _ValueError_ exception is raised.
