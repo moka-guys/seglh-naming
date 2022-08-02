@@ -8,7 +8,7 @@ SALT = 'jdhFeducf2gkFb2jj7hjs345klosboiydbo73u7g390yubfkd'
 # sample_name regular expression
 SAMPLE_REGEX = (
     r'([^_]+)_(\d+)_([^_]+)'  # Library_number_DNA
-    r'(?:_([^_]{4,}))?(?:_([^_]{2}))?(?:_([MFU]{1}))?'  # secondary identifiers
+    r'(?:_([^_]{4,}))?(?:_([^_]{2}))?(?:_([A-Za-z]))?'  # secondary identifiers
     r'_([^_]+)'  # Human readable panel name
     r'_(Pan[^_\.]+)'  # pan number
     r'(?:_(R[A-Z0-9]{2}))?'  # ODS code
