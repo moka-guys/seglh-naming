@@ -2,8 +2,10 @@ import re
 import hashlib
 
 
+# salt used to generate anonymised function'
 SALT = 'jdhFeducf2gkFb2jj7hjs345klosboiydbo73u7g390yubfkd'
 
+# sample_name regular expression
 SAMPLE_REGEX = (
     r'([^_]+)_(\d+)_([^_]+)'  # Library_number_DNA
     r'(?:_([^_]{4,}))?(?:_([^_]{2}))?(?:_([MFU]{1}))?'  # secondary identifiers
@@ -22,6 +24,8 @@ class Sample:
         self._parse_name(name)
 
     def _parse_name(self, name):
+        '''parses the sample name (or file name),
+        validates construct and each constituent element'''
         m = re.match(SAMPLE_REGEX, name)
         try:
             assert m
@@ -89,6 +93,7 @@ class Sample:
         ]))
 
     def file_extension(self, include_compression=True):
+        '''extracts the file extension if any'''
         if not self.rest:
             raise ValueError("Not a file name ({})".format(self.name))
         constituents = self.rest.split('.')
@@ -103,6 +108,7 @@ class Sample:
         return constituents[-1]
 
     def hash(self):
+        '''A stable cryptographic hash to obfuscate sample name if required'''
         s = str(self)+SALT
         s_encoded = s.encode('utf-8)')
         h = hashlib.new('sha256')
@@ -112,6 +118,8 @@ class Sample:
     # check if any elment has been modified
     @property
     def is_modified(self):
+        '''returns True if any constituent part of the sample name
+        has been modified after the initial parsing'''
         return not self._name.startswith(str(self))
 
     # value properties
