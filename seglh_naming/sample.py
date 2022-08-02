@@ -19,9 +19,9 @@ SAMPLE_REGEX = (
 class Sample:
     def __init__(self, name):
         self._name = name
-        self.parse_name(name)
+        self._parse_name(name)
 
-    def parse_name(self, name):
+    def _parse_name(self, name):
         m = re.match(SAMPLE_REGEX, name)
         try:
             assert m
@@ -71,7 +71,36 @@ class Sample:
         ]))
 
     def __repr__(self):
-        '''returns the pull parsed string'''
+        '''returns the full parsed string'''
+        return "_".join(filter(lambda x: x, [
+            self.libraryprep,
+            self.samplecount,
+            self.id1,
+            self.id2,
+            self.initials,
+            self.sex,
+            self.panelname,
+            self.panelnumber,
+            self.ods,
+            self.samplesheetindex,
+            self.readnumber,
+            self.lane,
+            self.rest
+        ]))
+
+    def file_extension(self, include_compression=True):
+        if not self.rest:
+            raise ValueError("Not a file name ({})".format(self.name))
+        constituents = self.rest.split('.')
+        # check if compressed
+        if constituents[-1] in ('gz', 'zip', 'bz2', 'zx') and \
+                constituents[-2] and \
+                re.match(r'\w{2,5}$', constituents[-2]):
+            if include_compression:
+                return '.'.join(constituents[-2:])
+            else:
+                return constituents[-2]
+        return constituents[-1]
 
     def hash(self):
         s = str(self)+SALT

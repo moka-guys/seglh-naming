@@ -21,7 +21,30 @@ def invalid_samples():
         "NGS123_12_382398_JD_M_VCP0R33_Pan000a_S12_R1",
         "NGS123_12_382398_PT324B_Pan0000_S12_R1",
         "NGS123_12_382398_PT324B_Pn0000_S12_R1",
-        "NGS123_12_382398_Pan0000_S12_R1"
+        "NGS123_12_382398_Pan0000_S12_R1",
+        "ONC123_00_234234_FG3243_Pan0000.realign.bam"
+    ]
+
+
+@pytest.fixture
+def file_names():
+    return [
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.realigned.bam",
+         True, 'bam'),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.realigned.bam",
+         False, 'bam'),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.re.xxx.vcf.gz",
+         True, 'vcf.gz'),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.re.xxx.vcf.gz",
+         False, 'vcf'),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R2_001.fastq.gz",
+         True, 'fastq.gz'),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R2_001.fastq.gz",
+         False, 'fastq'),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.haplotyper.vcf",
+         True, 'vcf'),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.haplotyper.vcf",
+         False, 'vcf'),
     ]
 
 
@@ -35,9 +58,19 @@ def test_valid_samples(valid_samples):
     assert all([Sample(s) for s in valid_samples])
 
 
-def test_reconstruction(valid_samples):
+def test_sample_reconstruction(valid_samples):
     for s in valid_samples:
         assert s.startswith(str(Sample(s)))
+
+
+def test_full_reconstruction(valid_samples):
+    for s in valid_samples:
+        assert s == repr(Sample(s))
+
+
+def test_file_extension(file_names):
+    for fi, z, ext in file_names:
+        assert Sample(fi).file_extension(z) == ext
 
 
 def test_hashed(valid_samples):
