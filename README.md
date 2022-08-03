@@ -48,7 +48,7 @@ sample = Sample('NGS123_12_382398_JD_C_VCP0R33_Pan0000_S12_R1_001')
 # ValueError: Sex invalid (C)
 ```
 
-#### Simplify 
+#### Sample ID and constituent parts
 Get the minimal required Sample ID from filename.
 
 ```python
@@ -65,8 +65,6 @@ print(sample)
 print(repr(sample))
 # NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001
 ```
-
-#### Constituents
 
 Get or edit constituents of sample ID
 
@@ -86,7 +84,6 @@ print(sample)
 print(sample.is_modified)
 # True
 ```
-
 
 #### Deidentify
 Returns a stable identifier for a given sample ID as a salted, cryptographic hash (SHA256).
