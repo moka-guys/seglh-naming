@@ -48,7 +48,19 @@ If validation fails, a _ValueError_ exception is raised.
 ```python
 from seglh_naming.sample import Sample
 
+# validate sample name
 sample = Sample('NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001')
+
+# build and validate from the constituent parts
+sample = Sample({
+	"libraryprep": "NGS123",
+	"samplecount": 12,
+	"id1": "382398",
+	"initials":	"JD",
+	"sex": "M",
+	"panelname": "VCP0R33",
+	"panelnumber": "Pan0000"
+})
 
 sample = Sample('NGS123_12_382398_JD_C_VCP0R33_Pan0000_S12_R1_001')
 # ValueError: Sex invalid (C)

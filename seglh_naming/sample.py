@@ -1,3 +1,4 @@
+import sys
 import re
 import hashlib
 
@@ -17,48 +18,64 @@ SAMPLE_REGEX = (
     r'(.*)$'  # can be followed by more (eg from a filename)
 )
 
+# sample name constituent field order
+SAMPLE_FIELDS = [
+    'libraryprep',
+    'samplecount',
+    'id1',
+    'id2',
+    'initials',
+    'sex',
+    'panelname',
+    'panelnumber',
+    'ods',
+    'samplesheetindex',
+    'readnumber',
+    'stable',
+    'rest'
+]
+
 
 class Sample:
     def __init__(self, name):
-        self._name = name
-        self._parse_name(name)
+        if isinstance(name, str):
+            self._parse_name(name)
+            self._name = name
+        elif isinstance(name, dict):
+            self._build_name(name)
+            self._name = str(self)
+
+        # validate completeness (at least one secondary identifier)
+        try:
+            assert self.satisfies_requirements()
+        except AssertionError:
+            raise ValueError('Identifier requirements not satisfied')
 
     def _parse_name(self, name):
         '''parses the sample name (or file name),
-        validates construct and each constituent element'''
+        and calls the builder which validates each element'''
         m = re.match(SAMPLE_REGEX, name)
         try:
             assert m
         except AssertionError:
             raise ValueError('Wrong naming format')
         else:
-            self.libraryprep = m.group(1)
-            self.samplecount = m.group(2)
-            self.id1 = m.group(3)
-            # seconday identifiers
-            self.id2 = m.group(4)
-            self.initials = m.group(5)
-            self.sex = m.group(6)
-            # panel
-            self.panelname = m.group(7)
-            self.panelnumber = m.group(8)
-            # optional
-            self.ods = m.group(9)
-            self.samplesheetindex = m.group(10)
-            self.readnumber = m.group(11)
-            self.stable = m.group(12)
-            self.rest = m.group(13)
+            constituents = dict(zip(SAMPLE_FIELDS, m.groups()))
+            self._build_name(constituents)
 
-        # validate completeness (at least one secondary identifier)
-        try:
-            assert self.satisfies_requirements()
-        except AssertionError:
-            raise ValueError('Nomenclature requirements not satisfied')
+    def _build_name(self, constituents):
+        '''build the sample name string from a dictionary
+        validates construct and each constituent element'''
+        for field in SAMPLE_FIELDS:
+            if field in constituents.keys() and constituents[field] is not None:
+                setattr(self, field, str(constituents[field]))
+            else:
+                setattr(self, field, None)
 
     def satisfies_requirements(self):
         '''checks if sample name contains at least 2 patient identifiers'''
         # min 2 identifiers
-        return self.id1 and (self.id2 or self.initials or self.sex)
+        return self.id1 and (self.id2 or (self.initials and self.sex))
 
     def __str__(self):
         '''Returns the sample name excluding any demultiplex additions'''
@@ -309,3 +326,7 @@ class Sample:
             raise ValueError("Unrecognised characters in parsed name ({})"
                              .format(value))
         self._rest = value
+
+
+if __name__ == "__main__":
+    Sample(sys.argv[1])

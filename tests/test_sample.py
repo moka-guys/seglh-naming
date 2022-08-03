@@ -10,7 +10,17 @@ def valid_samples():
         "NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001",
         "NGS123_12_382398_JD_M_VCP0R33_Pan0000_RJZ_S12_R1",
         "NGS123_12_382398_JD_M_VCP0R33_Pan0000.fasta",
-        "NGS123_12_382398_PT324B_VCP0R33_Pan0000_S12_R1"
+        "NGS123_12_382398_PT324B_VCP0R33_Pan0000_S12_R1",
+        {
+            "libraryprep": "ONC123",
+            "samplecount": 12,
+            "id1": "BAC123",
+            "id2": "SECOND",
+            "initials": "XX",
+            "sex": "U",
+            "panelname": "PANEL",
+            "panelnumber": "Pan0000"
+        }
     ]
 
 
@@ -23,7 +33,15 @@ def invalid_samples():
         "NGS123_12_382398_PT324B_Pan0000_S12_R1",
         "NGS123_12_382398_PT324B_Pn0000_S12_R1",
         "NGS123_12_382398_Pan0000_S12_R1",
-        "ONC123_00_234234_FG3243_Pan0000.realign.bam"
+        "ONC123_00_234234_FG3243_Pan0000.realign.bam",
+        #{
+        #    "libraryprep": "ONC123",
+        #    "samplecount": 12,
+        #    "id1": "BAC123",
+        #    "sex": "U",
+        #    "panelname": "PANEL",
+        #    "panelnumber": "Pan0000"
+        #}
     ]
 
 
@@ -82,12 +100,14 @@ def test_constituents(constituents):
 
 def test_sample_reconstruction(valid_samples):
     for s in valid_samples:
-        assert s.startswith(str(Sample(s)))
+        if isinstance(s, str):
+            assert s.startswith(str(Sample(s)))
 
 
 def test_full_reconstruction(valid_samples):
     for s in valid_samples:
-        assert s == repr(Sample(s))
+        if isinstance(s, str):
+            assert s == repr(Sample(s))
 
 
 def test_file_extension(file_names):
