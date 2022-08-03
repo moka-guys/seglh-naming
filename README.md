@@ -8,6 +8,12 @@ The repository provides a python package which can be installed with:
 
 `python setup.py install`
 
+## Contributions
+Any contributions _must_ follow GIT-Flow. Code reviews are mandatory and _must_ be done by a representative of each site implementing the naming scheme.
+
+A full test suite is provided and can be run with `pytest -v`. Code formatting _must_ follow recommendations of PEP8. Both requirements are checked automatically via GitHub Actions on pushes to `develop` and `main` branches
+
+
 ## Naming schemes
 
 After installation the package can be used to validate the folling naming schemes.
@@ -17,23 +23,23 @@ After installation the package can be used to validate the folling naming scheme
 The sample names are structured as follows and can be accessed by the correponding class property.
 
 ```
-NGS123_12_382398_P9392B_JD_M_VCP0R33_Pan0000_S12_R1_001.realigned.bam
-+===== += +===== +===== += + +====== +====== +== += +==+=============
-|      |  |      |      |  | |       |       |   |  |  |
-|      |  |      |      |  | |       |       |   |  |  +- rest (trailing string, optional)
-|      |  |      |      |  | |       |       |   |  +---- stable (not informative, optional)
-|      |  |      |      |  | |       |       |   +------- readnumber (optional)
-|      |  |      |      |  | |       |       +----------- samplesheetindex (optional)
-|      |  |      |      |  | |       +------------------- panelnumber (Pan Number)
-|      |  |      |      |  | +--------------------------- panelname (Human readable Pan number)
-|      |  |      |      |  +----------------------------- sex (optional)
-|      |  |      |      +-------------------------------- initials (secondary identifier, optional)
-|      |  |      +--------------------------------------- id2 (secondary identifier, optional)
-|      |  +---------------------------------------------- id1 (DNA number)
-|      +------------------------------------------------- samplecount (number in batch/library)
-+-------------------------------------------------------- libraryprep (library name)
+NGS123_12_382398_P9392B_JD_M_VCP0R33_Pan0000_RJZ_S12_R1_001.realigned.bam
++===== += +===== +===== += + +====== +====== +== +== += +==+=============
+|      |  |      |      |  | |       |       |   |   |  |  |
+|      |  |      |      |  | |       |       |   |   |  |  +- rest (trailing string, optional)
+|      |  |      |      |  | |       |       |   |   |  +---- stable (not informative, optional)
+|      |  |      |      |  | |       |       |   |   +------- readnumber (optional)
+|      |  |      |      |  | |       |       |   +----------- samplesheetindex (optional)
+|      |  |      |      |  | |       |       +--------------- ods (ODS code, optional)
+|      |  |      |      |  | |       +----------------------- panelnumber (Pan Number)
+|      |  |      |      |  | +------------------------------- panelname (Human readable Pan number)
+|      |  |      |      |  +--------------------------------- sex (optional)
+|      |  |      |      +------------------------------------ initials (secondary identifier, optional)
+|      |  |      +------------------------------------------- id2 (secondary identifier, optional)
+|      |  +-------------------------------------------------- id1 (DNA number)
+|      +----------------------------------------------------- samplecount (number in batch/library)
++------------------------------------------------------------ libraryprep (library name)
 ```
-
 
 #### Validation
 Validate a sample name or file name for conformity (formatting, required identifiers).
