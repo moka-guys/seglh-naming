@@ -39,7 +39,7 @@ SAMPLE_FIELDS = [
 
 class Sample:
     def __init__(self, name):
-        self._path  = ''
+        self._path = ''
         if isinstance(name, str):
             dirs = name.split('/')
             self._parse_name(dirs[-1])
@@ -71,7 +71,8 @@ class Sample:
         '''build the sample name string from a dictionary
         validates construct and each constituent element'''
         for field in SAMPLE_FIELDS:
-            if field in constituents.keys() and constituents[field] is not None:
+            if field in constituents.keys() and \
+                    constituents[field] is not None:
                 setattr(self, field, str(constituents[field]))
             else:
                 setattr(self, field, None)
@@ -111,7 +112,7 @@ class Sample:
             self.readnumber,
             self.stable
         ]))+self.rest
-        return os.path.join(self.path,filename)
+        return os.path.join(self.path, filename)
 
     def file_extension(self, include_compression=True):
         '''extracts the file extension if any'''
