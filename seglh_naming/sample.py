@@ -1,3 +1,4 @@
+import os
 import sys
 import re
 import hashlib
@@ -38,9 +39,12 @@ SAMPLE_FIELDS = [
 
 class Sample:
     def __init__(self, name):
+        self._path  = ''
         if isinstance(name, str):
-            self._parse_name(name)
-            self._name = name
+            dirs = name.split('/')
+            self._parse_name(dirs[-1])
+            self._name = dirs[-1]
+            self._path = '/'.join(dirs[:-1])
         elif isinstance(name, dict):
             self._build_name(name)
             self._name = str(self)
@@ -93,7 +97,7 @@ class Sample:
 
     def __repr__(self):
         '''returns the full parsed string'''
-        return "_".join(filter(lambda x: x, [
+        filename = "_".join(filter(lambda x: x, [
             self.libraryprep,
             self.samplecount,
             self.id1,
@@ -107,6 +111,7 @@ class Sample:
             self.readnumber,
             self.stable
         ]))+self.rest
+        return os.path.join(self.path,filename)
 
     def file_extension(self, include_compression=True):
         '''extracts the file extension if any'''
@@ -137,6 +142,23 @@ class Sample:
         '''returns True if any constituent part of the sample name
         has been modified after the initial parsing'''
         return not self._name.startswith(str(self))
+
+    # check if is a  file name
+    @property
+    def is_file(self):
+        '''
+        indicate if was built from file/path (inferred)
+            bool
+        '''
+        return bool(self.rest) or bool(self.path)
+
+    @property
+    def path(self):
+        '''
+        File path (if initialised from string)
+            string
+        '''
+        return self._path
 
     # value properties
     @property

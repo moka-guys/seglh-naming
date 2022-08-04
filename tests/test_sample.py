@@ -34,14 +34,14 @@ def invalid_samples():
         "NGS123_12_382398_PT324B_Pn0000_S12_R1",
         "NGS123_12_382398_Pan0000_S12_R1",
         "ONC123_00_234234_FG3243_Pan0000.realign.bam",
-        #{
-        #    "libraryprep": "ONC123",
-        #    "samplecount": 12,
-        #    "id1": "BAC123",
-        #    "sex": "U",
-        #    "panelname": "PANEL",
-        #    "panelnumber": "Pan0000"
-        #}
+        {
+            "libraryprep": "ONC123",
+            "samplecount": 12,
+            "id1": "BAC123",
+            "sex": "U",
+            "panelname": "PANEL",
+            "panelnumber": "Pan0000"
+        }
     ]
 
 
@@ -82,11 +82,56 @@ def file_names():
          False, 'vcf'),
     ]
 
+@pytest.fixture
+def file_paths():
+    return [
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.haplotyper.vcf",
+         True, ''),
+        ("/some/path/NGS123_12_382398_JD_M_VCP0R33_Pan0000.haplotyper.vcf",
+         True, "/some/path"),
+        ("/some/path/NGS123_12_382398_JD_M_VCP0R33_Pan0000",
+         True, "/some/path"),
+        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001",
+         False, ''),
+        ({
+            "libraryprep": "ONC123",
+            "samplecount": 12,
+            "id1": "BAC123",
+            "id2": "SECOND",
+            "initials": "XX",
+            "sex": "U",
+            "panelname": "PANEL",
+            "panelnumber": "Pan0000"
+        }, False, '')
+    ]
+
+
+@pytest.fixture
+def field_validation():
+    return [
+        (True, 'panelnumber', 'Pan1111'),
+        (False, 'panelnumber', 'Pan0'),
+        (True, 'libraryprep', 'NGS232b'),
+        (False, 'libraryprep', 'NS232'),
+    ]
+
 
 def test_invalid_samples(invalid_samples):
     for samplename in invalid_samples:
         with pytest.raises(ValueError):
             Sample(samplename)
+
+
+def test_field_validation(field_validation):
+    s = "NGS123_12_382398_PT324B_VCP0R33_Pan0000_S12_R1"
+    for is_valid, field, value in field_validation:
+        sample = Sample(s)
+        if is_valid:
+            setattr(sample, field, value)
+            assert getattr(sample,field) == value
+        else:
+            with pytest.raises(ValueError):
+                setattr(sample, field, value)
 
 
 def test_valid_samples(valid_samples):
@@ -126,3 +171,12 @@ def test_modified(valid_samples):
         assert not sample.is_modified
         sample.id1 = '0101010101'
         assert sample.is_modified
+
+
+def test_file_paths(file_paths):
+    for s, is_file, path in file_paths:
+        sample = Sample(s)
+        assert sample.is_file == is_file
+        assert sample.path == path
+        if isinstance(s, str):
+            assert s == repr(sample)
