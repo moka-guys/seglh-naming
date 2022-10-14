@@ -8,6 +8,8 @@ The repository provides a python package which can be installed with:
 
 `python setup.py install`
 
+NB: Use the `--user` flag or install into an virtualenv/pipenv if not installing globally.
+
 ## Contributions
 Any contributions _must_ follow GIT-Flow. Code reviews are mandatory and _must_ be done by a representative of each site implementing the naming scheme.
 
