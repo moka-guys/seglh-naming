@@ -78,9 +78,14 @@ class Sample:
                 setattr(self, field, None)
 
     def satisfies_requirements(self):
-        '''checks if sample name contains at least 2 patient identifiers'''
+        '''
+        checks if sample name contains at least 2 patient identifiers
+        checks total identifier length of TSO samples to be below 40 characters'''
         # min 2 identifiers
-        return self.id1 and (self.id2 or (self.initials and self.sex))
+        enough_identifiers = self.id1 and (self.id2 or (self.initials and self.sex))
+        # TSO max 40 characters
+        acceptable_length = not self.libraryprep.startswith('TSO') or len(str(self)) <= 40
+        return enough_identifiers and acceptable_length
 
     def __str__(self):
         '''Returns the sample name excluding any demultiplex additions'''

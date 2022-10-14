@@ -11,6 +11,8 @@ def valid_samples():
         "NGS123_12_382398_JD_M_VCP0R33_Pan0000_RJZ_S12_R1",
         "NGS123_12_382398_JD_M_VCP0R33_Pan0000.fasta",
         "NGS123_12_382398_PT324B_VCP0R33_Pan0000_S12_R1",
+        "TSO123_00_234234_9872349_UP01_Pan4969_CopyNumberVariants.vcf",
+        "NGS123_00_234234_TOOLONGNAMEFORTSO_UP01_Pan4969",
         {
             "libraryprep": "ONC123",
             "samplecount": 12,
@@ -34,6 +36,7 @@ def invalid_samples():
         "NGS123_12_382398_PT324B_Pn0000_S12_R1",
         "NGS123_12_382398_Pan0000_S12_R1",
         "ONC123_00_234234_FG3243_Pan0000.realign.bam",
+        "TSO123_00_234234_TOOLONGNAMEFORTSO_UP01_Pan4969",
         {
             "libraryprep": "ONC123",
             "samplecount": 12,
