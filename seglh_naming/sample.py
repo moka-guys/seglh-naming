@@ -37,7 +37,7 @@ SAMPLE_FIELDS = [
 ]
 
 
-class Sample:
+class Sample(object):
     def __init__(self, name):
         self._path = ''
         if isinstance(name, str):
