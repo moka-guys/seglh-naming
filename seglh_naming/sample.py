@@ -11,7 +11,7 @@ SALT = 'jdhFeducf2gkFb2jj7hjs345klosboiydbo73u7g390yubfkd'
 SAMPLE_REGEX = (
     r'([^_]+)_(\d+)_([^_]+)'  # Library_number_DNA
     r'(?:_([^_]{4,}))?(?:_([^_]{2}))?(?:_([A-Za-z]))?'  # secondary identifiers
-    r'_([^_]+)'  # Human readable panel name
+    r'(?:_([^_]+))?'  # Human readable panel name
     r'_(Pan[^_\.]+)'  # pan number
     r'(?:_(R[A-Z0-9]{2}))?'  # ODS code
     r'(?:_(S\d+)_(R\d))?'  # samplesheet number and read number
@@ -50,10 +50,7 @@ class Sample(object):
             self._name = str(self)
 
         # validate completeness (at least one secondary identifier)
-        try:
-            assert self.satisfies_requirements()
-        except AssertionError:
-            raise ValueError('Identifier requirements not satisfied')
+        self._check_requirements()
 
     def _parse_name(self, name):
         '''parses the sample name (or file name),
@@ -77,15 +74,18 @@ class Sample(object):
             else:
                 setattr(self, field, None)
 
-    def satisfies_requirements(self):
+    def _check_requirements(self):
         '''
         checks if sample name contains at least 2 patient identifiers
         checks total identifier length of TSO samples to be below 40 characters'''
         # min 2 identifiers
         enough_identifiers = self.id1 and (self.id2 or (self.initials and self.sex))
+        if not enough_identifiers:
+            raise ValueError('Not enough identifiers in sample name')
         # TSO max 40 characters
         acceptable_length = not self.libraryprep.startswith('TSO') or len(str(self)) <= 40
-        return enough_identifiers and acceptable_length
+        if not acceptable_length:
+            raise ValueError('TSO sample name too long')
 
     def __str__(self):
         '''Returns the sample name excluding any demultiplex additions'''
@@ -266,7 +266,7 @@ class Sample(object):
 
     @panelname.setter
     def panelname(self, value):
-        if not re.match(r'\w{4,}$', value):
+        if value and not re.match(r'\w{4,}$', value):
             raise ValueError("Panel Name invalid ({})".format(value))
         self._panelname = value
 
