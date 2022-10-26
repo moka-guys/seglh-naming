@@ -2,6 +2,9 @@ import pytest
 
 from seglh_naming.sample import Sample
 
+####################
+# FIXTURES #########
+####################
 
 @pytest.fixture
 def valid_samples():
@@ -25,7 +28,6 @@ def valid_samples():
         }
     ]
 
-
 @pytest.fixture
 def invalid_samples():
     return [
@@ -47,7 +49,6 @@ def invalid_samples():
         }
     ]
 
-
 @pytest.fixture
 def constituents():
     return [
@@ -60,7 +61,6 @@ def constituents():
         ("NGS123_12_382398_JD_M_VCP0R33_Pan0000.fasta", 'sex', 'M'),
         ("NGS123_12_382398_PT324B_VCP0R33_Pan0000_S12_R1", 'sex', None)
     ]
-
 
 @pytest.fixture
 def file_names():
@@ -108,16 +108,20 @@ def file_paths():
         }, False, '')
     ]
 
-
 @pytest.fixture
 def field_validation():
     return [
-        (True, 'panelnumber', 'Pan1111'),
-        (False, 'panelnumber', 'Pan0'),
-        (True, 'libraryprep', 'NGS232b'),
-        (False, 'libraryprep', 'NS232'),
+        (None, 'panelnumber', 'Pan1111'),
+        ('Pan Number invalid', 'panelnumber', 'Pan0'),
+        (None, 'libraryprep', 'NGS232b'),
+        ('LibraryPrep name invalid', 'libraryprep', 'NS232'),
+        (None, 'id1', 'AM1123'),
+        ('Specimen/DNA number invalid', 'id1', 'AM1'),
     ]
 
+####################
+# TESTS ############
+####################
 
 def test_invalid_samples(invalid_samples):
     for samplename in invalid_samples:
@@ -127,14 +131,14 @@ def test_invalid_samples(invalid_samples):
 
 def test_field_validation(field_validation):
     s = "NGS123_12_382398_PT324B_VCP0R33_Pan0000_S12_R1"
-    for is_valid, field, value in field_validation:
+    for match_exception, field, value in field_validation:
         sample = Sample(s)
-        if is_valid:
+        if match_exception:
+            with pytest.raises(ValueError, match=match_exception):
+                setattr(sample, field, value)
+        else:
             setattr(sample, field, value)
             assert getattr(sample,field) == value
-        else:
-            with pytest.raises(ValueError):
-                setattr(sample, field, value)
 
 
 def test_valid_samples(valid_samples):
