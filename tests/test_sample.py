@@ -20,6 +20,7 @@ def valid_samples():
         "NGS123_12_382398_JD_M_VCP0R33_Pan0000_RJZ_S12_R1",
         "NGS123_12_382398_JD_M_VCP0R33_Pan0000.fasta",
         "NGS123_12_382398_265254_VCP0R33_Pan0000_S12_R1",
+        "NGS123_12_382398_265ER254_VCP0R33_Pan0000_S12_R1",
         "TSO123_00_234234_9872349_UP01_Pan4969_CopyNumberVariants.vcf",
         "NGS123_00_234234_123456789123456_UP01_Pan4969", # non-tso longer than tso requirements
         "ONC123_00_234234_123243_Pan0000.realign.bam",
