@@ -13,14 +13,15 @@ def valid_samples():
         "NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001",
         "NGS123_12_382398_JD_M_VCP0R33_Pan0000_RJZ_S12_R1",
         "NGS123_12_382398_JD_M_VCP0R33_Pan0000.fasta",
-        "NGS123_12_382398_PT324B_VCP0R33_Pan0000_S12_R1",
+        "NGS123_12_382398_00324B_VCP0R33_Pan0000_S12_R1",
         "TSO123_00_234234_9872349_UP01_Pan4969_CopyNumberVariants.vcf",
-        "NGS123_00_234234_TOOLONGNAMEFORTSO_UP01_Pan4969",
+        "NGS123_00_234234_000TOOLONG4TSO_UP01_Pan4969",
+        "ONC123_00_EK234234_3243_Pan0000.realign.bam",
         {
             "libraryprep": "ONC123",
             "samplecount": 12,
             "id1": "BAC123",
-            "id2": "SECOND",
+            "id2": "12345",
             "initials": "XX",
             "sex": "U",
             "panelname": "PANEL",
@@ -37,8 +38,7 @@ def invalid_samples():
         "NGS123_12_382398_PT324B_Pan0000_S12_R1",
         "NGS123_12_382398_PT324B_Pn0000_S12_R1",
         "NGS123_12_382398_Pan0000_S12_R1",
-        "ONC123_00_234234_FG3243_Pan0000.realign.bam",
-        "TSO123_00_234234_TOOLONGNAMEFORTSO_UP01_Pan4969",
+        "TSO123_00_234234_00TOOLONGFORTSO_UP01_Pan4969",
         {
             "libraryprep": "ONC123",
             "samplecount": 12,
@@ -52,14 +52,14 @@ def invalid_samples():
 @pytest.fixture
 def constituents():
     return [
-        ("NGS123_12_382398_SECND_VC033_Pan0000_S12", 'panelnumber', 'Pan0000'),
+        ("NGS123_12_382398_02SECONDARY_VC033_Pan0000_S12", 'panelnumber', 'Pan0000'),
         ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1", 'readnumber', 'R1'),
         ("NGS123_12_382398_JD_M_VCP0R33_Pan0000", 'panelname', 'VCP0R33'),
         ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_RJZ_S12_R1", 'ods', 'RJZ'),
         ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_RJZ", 'ods', 'RJZ'),
         ("NGS123_12_382398_JD_M_VCP0R33_Pan0000.fasta", 'initials', 'JD'),
         ("NGS123_12_382398_JD_M_VCP0R33_Pan0000.fasta", 'sex', 'M'),
-        ("NGS123_12_382398_PT324B_VCP0R33_Pan0000_S12_R1", 'sex', None)
+        ("NGS123_12_382398_0024B_VCP0R33_Pan0000_S12_R1", 'sex', None)
     ]
 
 @pytest.fixture
@@ -100,7 +100,7 @@ def file_paths():
             "libraryprep": "ONC123",
             "samplecount": 12,
             "id1": "BAC123",
-            "id2": "SECOND",
+            "id2": "12345",
             "initials": "XX",
             "sex": "U",
             "panelname": "PANEL",
@@ -130,7 +130,7 @@ def test_invalid_samples(invalid_samples):
 
 
 def test_field_validation(field_validation):
-    s = "NGS123_12_382398_PT324B_VCP0R33_Pan0000_S12_R1"
+    s = "NGS123_12_382398_00324B_VCP0R33_Pan0000_S12_R1"
     for match_exception, field, value in field_validation:
         sample = Sample(s)
         if match_exception:
