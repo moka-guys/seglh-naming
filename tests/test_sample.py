@@ -26,7 +26,7 @@ def valid_samples():
         {
             "libraryprep": "ONC123",
             "samplecount": 12,
-            "id1": "BAC123",
+            "id1": "123456",
             "id2": "123456",
             "initials": "XX",
             "sex": "U",
@@ -62,7 +62,7 @@ def invalid_samples():
         {
             "libraryprep": "ONC123",
             "samplecount": 12,
-            "id1": "BAC123",
+            "id1": "123456",
             "sex": "U",
             "panelname": "PANEL",
             "panelnumber": "Pan0000"
@@ -125,7 +125,7 @@ def file_paths():
         ({
             "libraryprep": "ONC123",
             "samplecount": 12,
-            "id1": "BAC123",
+            "id1": "123456",
             "id2": "123456",
             "initials": "XX",
             "sex": "U",
@@ -141,7 +141,7 @@ def field_validation():
         ('Pan Number invalid', 'panelnumber', 'Pan0'),
         (None, 'libraryprep', 'NGS232b'),
         ('LibraryPrep name invalid', 'libraryprep', 'NS232'),
-        (None, 'id1', 'AM1123'),
+        (None, 'id1', '123456'),
         ('Specimen/DNA number invalid', 'id1', 'AM1'),
     ]
 
@@ -156,7 +156,7 @@ def test_invalid_samples(invalid_samples):
 
 
 def test_field_validation(field_validation):
-    s = "NGS123_12_382398_265254_VCP0R33_Pan0000_S12_R1"
+    s = "NGS123_12_382398_003245_VCP0R33_Pan0000_S12_R1"
     for match_exception, field, value in field_validation:
         sample = Sample(s)
         if match_exception:

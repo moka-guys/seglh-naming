@@ -9,8 +9,8 @@ SALT = 'jdhFeducf2gkFb2jj7hjs345klosboiydbo73u7g390yubfkd'
 
 # sample_name regular expression
 SAMPLE_REGEX = (
-    r'([^_]+)_(\d+)_([\d]{3,})'  # Library_number_DNA
-    r'(?:_([\d]{3,}))?(?:_([^_]{1,2}))?(?:_([A-Za-z]))?'  # secondary identifiers
+    r'([^_]+)_(\d+)_(\d[^_]+)'  # Library_number_DNA
+    r'(?:_(\d[^_]+))?(?:_([^_]{1,2}))?(?:_([A-Za-z]))?'  # secondary identifiers
     r'(?:_([^_]+))?'  # Human readable panel name
     r'_(Pan[^_\.]*)'  # pan number
     r'(?:_(R[A-Z0-9]{2}))?'  # ODS code
@@ -59,7 +59,7 @@ class Sample(object):
         try:
             assert m
         except AssertionError:
-            raise ValueError('Wrong naming format')
+            raise ValueError('Wrong naming format ({})'.format(name))
         else:
             constituents = dict(zip(SAMPLE_FIELDS, m.groups()))
             self._build_name(constituents)
@@ -210,7 +210,7 @@ class Sample(object):
 
     @id1.setter
     def id1(self, value):
-        if not re.match(r'\w{6,}', value):
+        if not re.match(r'\d{6,}', value):
             raise ValueError("Specimen/DNA number invalid ({})".format(value))
         self._id1 = value
 
@@ -224,7 +224,7 @@ class Sample(object):
 
     @id2.setter
     def id2(self, value):
-        if value and not re.match(r'\w{6,}$', value):
+        if value and not re.match(r'\d{6,}$', value):
             raise ValueError("Secondary identifier invalid ({})".format(value))
         self._id2 = value
 
