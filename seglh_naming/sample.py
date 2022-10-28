@@ -53,7 +53,7 @@ def get_all_errors(identifier):
 
 
 class Sample(object):
-    def __init__(self, name, collect_errors=False):
+    def __init__(self, name):
         '''
         parses the sample name (or file name)
         calls the builder which validates each element
@@ -70,19 +70,19 @@ class Sample(object):
                 raise ValueError('Wrong naming format ({})'.format(self._name))
             else:
                 constituents = dict(zip(SAMPLE_FIELDS, m.groups()))
-                self._build_name(constituents, collect_errors)
+                self._build_name(constituents)
         elif isinstance(name, dict):
-            self._build_name(name, collect_errors)
+            self._build_name(name)
             self._name = str(self)
 
         # validate completeness (at least one secondary identifier)
         self._check_requirements()
 
-    def _build_name(self, constituents, collect_errors=False):
+    def _build_name(self, constituents):
         '''
         build sample name string from dictionary
         validate construct and each constituent element
-        aggregate errors if collect_error argument provided
+        aggregates errors for different fields
         '''
         collected_errors=[]
         for field in SAMPLE_FIELDS:
@@ -93,10 +93,7 @@ class Sample(object):
                 else:
                     setattr(self, field, None)
             except Exception as e:
-                if collect_errors:
-                    collected_errors.append(str(e))
-                else:
-                    raise e
+                collected_errors.append(str(e))
         if collected_errors:
             raise ValueError(", ".join(collected_errors))
 
