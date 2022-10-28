@@ -40,7 +40,6 @@ SAMPLE_FIELDS = [
 class Sample(object):
     def __init__(self, name):
         self._path = ''
-        self._errors = []
         if isinstance(name, str):
             dirs = name.split('/')
             self._parse_name(dirs[-1])
@@ -53,13 +52,9 @@ class Sample(object):
         # validate completeness (at least one secondary identifier)
         self._check_requirements()
 
-        # return errors
-        if self._errors:
-            raise ValueError(', '.join(self._errors))
-
     def _parse_name(self, name):
-        """parses the sample name (or file name),
-        and calls the builder which validates each element"""
+        '''parses the sample name (or file name),
+        and calls the builder which validates each element'''
         m = re.match(SAMPLE_REGEX, name)
         try:
             assert m
@@ -70,8 +65,8 @@ class Sample(object):
             self._build_name(constituents)
 
     def _build_name(self, constituents):
-        """build the sample name string from a dictionary
-        validates construct and each constituent element"""
+        '''build the sample name string from a dictionary
+        validates construct and each constituent element'''
         for field in SAMPLE_FIELDS:
             if field in constituents.keys() and \
                     constituents[field] is not None:
@@ -80,8 +75,9 @@ class Sample(object):
                 setattr(self, field, None)
 
     def _check_requirements(self):
-        """checks if sample name contains at least 2 patient identifiers
-        checks total identifier length of TSO samples to be below 40 characters"""
+        '''
+        checks if sample name contains at least 2 patient identifiers
+        checks total identifier length of TSO samples to be below 40 characters'''
         # min 2 identifiers
         enough_identifiers = self.id1 and (self.id2 or (self.initials and self.sex))
         if not enough_identifiers:
@@ -92,7 +88,7 @@ class Sample(object):
             raise ValueError('TSO sample name too long')
 
     def __str__(self):
-        """Returns the sample name excluding any demultiplex additions"""
+        '''Returns the sample name excluding any demultiplex additions'''
         return "_".join(filter(lambda x: x, [
             self.libraryprep,
             self.samplecount,
@@ -106,7 +102,7 @@ class Sample(object):
         ]))
 
     def __repr__(self):
-        """returns the full parsed string"""
+        '''returns the full parsed string'''
         filename = "_".join(filter(lambda x: x, [
             self.libraryprep,
             self.samplecount,
@@ -124,7 +120,7 @@ class Sample(object):
         return os.path.join(self.path, filename)
 
     def file_extension(self, include_compression=True):
-        """extracts the file extension if any"""
+        '''extracts the file extension if any'''
         if not self.rest:
             raise ValueError("Not a file name ({})".format(self.name))
         constituents = self.rest.split('.')
@@ -139,7 +135,7 @@ class Sample(object):
         return constituents[-1]
 
     def hash(self):
-        """A stable cryptographic hash to obfuscate sample name if required"""
+        '''A stable cryptographic hash to obfuscate sample name if required'''
         s = str(self)+SALT
         s_encoded = s.encode('utf-8)')
         h = hashlib.new('sha256')
@@ -149,31 +145,31 @@ class Sample(object):
     # check if any elment has been modified
     @property
     def is_modified(self):
-        """returns True if any constituent part of the sample name
-        has been modified after the initial parsing"""
+        '''returns True if any constituent part of the sample name
+        has been modified after the initial parsing'''
         return not self._name.startswith(str(self))
 
     # check if is a  file name
     @property
     def is_file(self):
-        """
+        '''
         indicate if was built from file/path (inferred)
             bool
-        """
+        '''
         return bool(self.rest) or bool(self.path)
 
     @property
     def path(self):
-        """
+        '''
         File path (if initialised from string)
             string
-        """
+        '''
         return self._path
 
     # value properties
     @property
     def libraryprep(self):
-        """
+        '''
         Library preparation name
         Prefix:
             Three+ letter code
@@ -181,181 +177,182 @@ class Sample(object):
             number
         Postfix (optional):
             letters (eg. rep, b)
-        """
+        '''
         return self._libraryprep
 
     @libraryprep.setter
     def libraryprep(self, value):
         if not re.match(r'[A-Z]{3,}\d+\w*', value):
-            self._errors.append(str(ValueError("LibraryPrep name invalid ({})".format(value))))
+            raise ValueError("LibraryPrep name invalid ({})".format(value))
         self._libraryprep = value
 
     @property
     def samplecount(self):
-        """
+        '''
         Sample index in library preparation:
             couple of ints (two digit number)
-        """
+        '''
         return self._samplecount
 
     @samplecount.setter
     def samplecount(self, value):
         if not re.match(r'\d{2}$', value):
-            self._errors.append(str(ValueError("SampleCount invalid ({})".format(value))))
+            raise ValueError("SampleCount invalid ({})".format(value))
         self._samplecount = value
 
     @property
     def id1(self):
-        """
+        '''
         Specimen or DNA number:
             Alpha numeric string
-        """
+        '''
         return self._id1
 
     @id1.setter
     def id1(self, value):
         if not re.match(r'\d{6,}', value):
-            self._errors.append(str(ValueError("Specimen/DNA number invalid ({})".format(value))))
+            raise ValueError("Specimen/DNA number invalid ({})".format(value))
         self._id1 = value
 
     @property
     def id2(self):
-        """
+        '''
         Secondary Patient, Specimen or DNA identifier:
             Alpha numeric string
-        """
+        '''
         return self._id2
 
     @id2.setter
     def id2(self, value):
         if value and not re.match(r'\d\w{5,}$', value):
-            self._errors.append((ValueError("Secondary identifier invalid ({})".format(value))))
+            raise ValueError("Secondary identifier invalid ({})".format(value))
         self._id2 = value
 
     @property
     def initials(self):
-        """
+        '''
         Patient initials:
             couple of chars
-        """
+        '''
         return self._initials
 
     @initials.setter
     def initials(self, value):
         if value and not re.match(r'[A-Z]{2}$', value):
-            self._errors.append(str(ValueError("Initials invalid ({})".format(value))))
+            raise ValueError("Initials invalid ({})".format(value))
         self._initials = value
 
     @property
     def sex(self):
-        """
+        '''
         Patient sex:
             single char
-        """
+        '''
         return self._sex
 
     @sex.setter
     def sex(self, value):
         if value and not re.match(r'[MFU]$', value):
-            self._errors.append(str(ValueError("Sex invalid ({})".format(value))))
+            raise ValueError("Sex invalid ({})".format(value))
         self._sex = value
 
     @property
     def panelname(self):
-        """
+        '''
         Human readable panel name
             string
-        """
+        '''
         return self._panelname
 
     @panelname.setter
     def panelname(self, value):
         if value and not re.match(r'\w{4,}$', value):
-            self._errors.append(str(ValueError("Panel Name invalid ({})".format(value))))
+            raise ValueError("Panel Name invalid ({})".format(value))
         self._panelname = value
 
     @property
     def panelnumber(self):
-        """
+        '''
         Panel/routing number
             digits prefixed by Pan
-        """
+        '''
         return self._panelnumber
 
     @panelnumber.setter
     def panelnumber(self, value):
         if not re.match(r'Pan\d{2,}$', value):
-            self._errors.append(str(ValueError("Pan Number invalid ({})".format(value))))
+            raise ValueError("Pan Number invalid ({})".format(value))
         self._panelnumber = value
 
     @property
     def ods(self):
-        """
+        '''
         ODS code:
             Triplet of alphanumeric character
-        """
+        '''
         return self._ods
 
     @ods.setter
     def ods(self, value):
         if value and not re.match(r'R\w{2}$', value):
-            self._errors.append(str(ValueError("Unknown or invalid ODS code ({})".format(value))))
+            raise ValueError("Unknown or invalid ODS code ({})".format(value))
         self._ods = value
 
     @property
     def samplesheetindex(self):
-        """
+        '''
         Samplesheet index (from dmx):
             digits prefixed with S
-        """
+        '''
         return self._samplesheetindex
 
     @samplesheetindex.setter
     def samplesheetindex(self, value):
         if value and not re.match(r'S\d+$', value):
-            self._errors.append(str(ValueError("Samplesheet index invalid ({})".format(value))))
+            raise ValueError("Samplesheet index invalid ({})".format(value))
         self._samplesheetindex = value
 
     @property
     def readnumber(self):
-        """
+        '''
         Read number in pair
             single digit prefixed by R or I
-        """
+        '''
         return self._readnumber
 
     @readnumber.setter
     def readnumber(self, value):
         if value and not re.match(r'[RI]\d$', value):
-            self._errors.append(str(ValueError("Readnumber invalid ({})".format(value))))
+            raise ValueError("Readnumber invalid ({})".format(value))
         self._readnumber = value
 
     @property
     def stable(self):
-        """
+        '''
         Stable number from demultiplexing
             001
-        """
+        '''
         return self._stable
 
     @stable.setter
     def stable(self, value):
         if value and not re.match(r'001$', value):
-            self._errors.append(str(ValueError("Number invalid ({})".format(value))))
+            raise ValueError("Number invalid ({})".format(value))
         self._stable = value
 
     @property
     def rest(self):
-        """
+        '''
         Remainder of the parsed string (e.g. rest of filename)
             a string of any length
-        """
+        '''
         return self._rest or ''
 
     @rest.setter
     def rest(self, value):
         if value and not re.match(r'[\w\._]*$', value):
-            self._errors.append(str(ValueError("Unrecognised characters in parsed name ({})".format(value))))
+            raise ValueError("Unrecognised characters in parsed name ({})"
+                             .format(value))
         self._rest = value
 
 

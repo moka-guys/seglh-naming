@@ -161,8 +161,8 @@ def test_field_validation(field_validation):
     for match_exception, field, value in field_validation:
         sample = Sample(s)
         if match_exception:
-            setattr(sample, field, value)
-            assert "".join(sample._errors) == "{} ({})".format(match_exception, value)
+            with pytest.raises(ValueError, match=match_exception):
+                setattr(sample, field, value)
         else:
             setattr(sample, field, value)
             assert getattr(sample,field) == value
