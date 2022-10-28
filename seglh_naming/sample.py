@@ -261,7 +261,7 @@ class Sample(object):
 
     @id2.setter
     def id2(self, value):
-        if value and not re.match(r'^[a-zA-Z0-9]{5,}$', value):
+        if value and not re.match(r'^[a-zA-Z0-9-]{5,}$', value):
             raise ValueError("Secondary identifier invalid ({})".format(value))
         self._id2 = value
 
@@ -331,7 +331,7 @@ class Sample(object):
 
     @ods.setter
     def ods(self, value):
-        if value and not re.match(r'^R[a-zA-Z0-9]{2}$', value):
+        if value and not re.match(r'^R[A-Z0-9]{2}$', value):
             raise ValueError("Unknown or invalid ODS code ({})".format(value))
         self._ods = value
 
