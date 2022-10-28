@@ -141,6 +141,7 @@ def field_validation():
         (None, 'panelnumber', 'Pan1111'),
         ('Pan Number invalid', 'panelnumber', 'Pan0'),
         (None, 'libraryprep', 'NGS232b'),
+        ('LibraryPrep name invalid', 'libraryprep', 'NSG234_'),
         ('LibraryPrep name invalid', 'libraryprep', 'NS232'),
         (None, 'id1', '123456'),
         ('Specimen/DNA number invalid', 'id1', 'AM1'),
