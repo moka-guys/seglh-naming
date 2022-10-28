@@ -54,8 +54,10 @@ def get_all_errors(identifier):
 
 class Sample(object):
     def __init__(self, name, collect_errors=False):
-        '''parses the sample name (or file name),
-        and calls the builder which validates each element'''
+        '''
+        parses the sample name (or file name)
+        calls the builder which validates each element
+        '''
         self._path = ''
         if isinstance(name, str):
             dirs = name.split('/')
@@ -77,22 +79,32 @@ class Sample(object):
         self._check_requirements()
 
     def _build_name(self, constituents, collect_errors=False):
-        '''build the sample name string from a dictionary
-        validates construct and each constituent element'''
-        
-        # TODO - aggregate errors (exceptions) if collect_errors is True
-
+        '''
+        build sample name string from dictionary
+        validate construct and each constituent element
+        aggregate errors if collect_error argument provided
+        '''
+        collected_errors=[]
         for field in SAMPLE_FIELDS:
-            if field in constituents.keys() and \
-                    constituents[field] is not None:
-                setattr(self, field, str(constituents[field]))
-            else:
-                setattr(self, field, None)
+            try:
+                if field in constituents.keys() and \
+                        constituents[field] is not None:
+                    setattr(self, field, str(constituents[field]))
+                else:
+                    setattr(self, field, None)
+            except Exception as e:
+                if collect_errors:
+                    collected_errors.append(str(e))
+                else:
+                    raise e
+        if collected_errors:
+            raise ValueError(", ".join(collected_errors))
 
     def _check_requirements(self):
         '''
         checks if sample name contains at least 2 patient identifiers
-        checks total identifier length of TSO samples to be below 40 characters'''
+        checks total identifier length of TSO samples to be below 40 characters
+        '''
         # min 2 identifiers
         enough_identifiers = self.id1 and (self.id2 or (self.initials and self.sex))
         if not enough_identifiers:
@@ -103,7 +115,9 @@ class Sample(object):
             raise ValueError('TSO sample name too long')
 
     def __str__(self):
-        '''Returns the sample name excluding any demultiplex additions'''
+        '''
+        Returns the sample name excluding any demultiplex additions
+        '''
         return "_".join(filter(lambda x: x, [
             self.libraryprep,
             self.samplecount,
@@ -117,7 +131,9 @@ class Sample(object):
         ]))
 
     def __repr__(self):
-        '''returns the full parsed string'''
+        '''
+        returns the full parsed string
+        '''
         filename = "_".join(filter(lambda x: x, [
             self.libraryprep,
             self.samplecount,
@@ -135,7 +151,9 @@ class Sample(object):
         return os.path.join(self.path, filename)
 
     def file_extension(self, include_compression=True):
-        '''extracts the file extension if any'''
+        '''
+        extracts the file extension if any
+        '''
         if not self.rest:
             raise ValueError("Not a file name ({})".format(self.name))
         constituents = self.rest.split('.')
@@ -150,7 +168,9 @@ class Sample(object):
         return constituents[-1]
 
     def hash(self):
-        '''A stable cryptographic hash to obfuscate sample name if required'''
+        '''
+        A stable cryptographic hash to obfuscate sample name if required
+        '''
         s = str(self)+SALT
         s_encoded = s.encode('utf-8)')
         h = hashlib.new('sha256')
@@ -160,8 +180,10 @@ class Sample(object):
     # check if any elment has been modified
     @property
     def is_modified(self):
-        '''returns True if any constituent part of the sample name
-        has been modified after the initial parsing'''
+        '''
+        returns True if any constituent part of the sample name
+        has been modified after the initial parsing
+        '''
         return not self._name.startswith(str(self))
 
     # check if is a  file name
@@ -197,7 +219,7 @@ class Sample(object):
 
     @libraryprep.setter
     def libraryprep(self, value):
-        if not re.match(r'[A-Z]{3,}\d+\w*', value):
+        if not re.match(r'^[A-Z]{3,}\d+[a-zA-Z0-9]*$', value):
             raise ValueError("LibraryPrep name invalid ({})".format(value))
         self._libraryprep = value
 
@@ -211,7 +233,7 @@ class Sample(object):
 
     @samplecount.setter
     def samplecount(self, value):
-        if not re.match(r'\d{2}$', value):
+        if not re.match(r'^\d{2}$', value):
             raise ValueError("SampleCount invalid ({})".format(value))
         self._samplecount = value
 
@@ -225,7 +247,7 @@ class Sample(object):
 
     @id1.setter
     def id1(self, value):
-        if not re.match(r'\d{6,}', value):
+        if not re.match(r'^\d{6,}', value):
             raise ValueError("Specimen/DNA number invalid ({})".format(value))
         self._id1 = value
 
@@ -239,7 +261,7 @@ class Sample(object):
 
     @id2.setter
     def id2(self, value):
-        if value and not re.match(r'\d\w{5,}$', value):
+        if value and not re.match(r'^[a-zA-Z0-9]{5,}$', value):
             raise ValueError("Secondary identifier invalid ({})".format(value))
         self._id2 = value
 
@@ -253,7 +275,7 @@ class Sample(object):
 
     @initials.setter
     def initials(self, value):
-        if value and not re.match(r'[A-Z]{2}$', value):
+        if value and not re.match(r'^[A-Z]{2}$', value):
             raise ValueError("Initials invalid ({})".format(value))
         self._initials = value
 
@@ -267,7 +289,7 @@ class Sample(object):
 
     @sex.setter
     def sex(self, value):
-        if value and not re.match(r'[MFU]$', value):
+        if value and not re.match(r'^[MFU]$', value):
             raise ValueError("Sex invalid ({})".format(value))
         self._sex = value
 
@@ -281,7 +303,7 @@ class Sample(object):
 
     @panelname.setter
     def panelname(self, value):
-        if value and not re.match(r'\w{4,}$', value):
+        if value and not re.match(r'^[a-zA-Z0-9]{4,}$', value):
             raise ValueError("Panel Name invalid ({})".format(value))
         self._panelname = value
 
@@ -295,7 +317,7 @@ class Sample(object):
 
     @panelnumber.setter
     def panelnumber(self, value):
-        if not re.match(r'Pan\d{2,}$', value):
+        if not re.match(r'^Pan\d{2,}$', value):
             raise ValueError("Pan Number invalid ({})".format(value))
         self._panelnumber = value
 
@@ -309,7 +331,7 @@ class Sample(object):
 
     @ods.setter
     def ods(self, value):
-        if value and not re.match(r'R\w{2}$', value):
+        if value and not re.match(r'^R[a-zA-Z0-9]{2}$', value):
             raise ValueError("Unknown or invalid ODS code ({})".format(value))
         self._ods = value
 
@@ -323,7 +345,7 @@ class Sample(object):
 
     @samplesheetindex.setter
     def samplesheetindex(self, value):
-        if value and not re.match(r'S\d+$', value):
+        if value and not re.match(r'^S\d+$', value):
             raise ValueError("Samplesheet index invalid ({})".format(value))
         self._samplesheetindex = value
 
@@ -337,7 +359,7 @@ class Sample(object):
 
     @readnumber.setter
     def readnumber(self, value):
-        if value and not re.match(r'[RI]\d$', value):
+        if value and not re.match(r'^[RI]\d$', value):
             raise ValueError("Readnumber invalid ({})".format(value))
         self._readnumber = value
 
@@ -351,7 +373,7 @@ class Sample(object):
 
     @stable.setter
     def stable(self, value):
-        if value and not re.match(r'001$', value):
+        if value and not re.match(r'^001$', value):
             raise ValueError("Number invalid ({})".format(value))
         self._stable = value
 
@@ -365,7 +387,7 @@ class Sample(object):
 
     @rest.setter
     def rest(self, value):
-        if value and not re.match(r'[\w\._]*$', value):
+        if value and not re.match(r'^[\w\.]*$', value):
             raise ValueError("Unrecognised characters in parsed name ({})"
                              .format(value))
         self._rest = value
