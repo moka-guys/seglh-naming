@@ -37,36 +37,51 @@ SAMPLE_FIELDS = [
 ]
 
 
+def get_all_errors(identifier):
+    error = []
+    isValid = False
+    while not isValid:
+        try:
+            sample = Sample(identifier, collect_errors)
+        except Exception as e:
+            error.append(e)
+            # replace the invalid part
+        else:
+            isValid = True
+    if error:
+        raise Exception("\n".join(error))
+
+
 class Sample(object):
-    def __init__(self, name):
+    def __init__(self, name, collect_errors=False):
+        '''parses the sample name (or file name),
+        and calls the builder which validates each element'''
         self._path = ''
         if isinstance(name, str):
             dirs = name.split('/')
-            self._parse_name(dirs[-1])
             self._name = dirs[-1]
             self._path = '/'.join(dirs[:-1])
+            m = re.match(SAMPLE_REGEX, self._name)
+            try:
+                assert m
+            except AssertionError:
+                raise ValueError('Wrong naming format ({})'.format(self._name))
+            else:
+                constituents = dict(zip(SAMPLE_FIELDS, m.groups()))
+                self._build_name(constituents, collect_errors)
         elif isinstance(name, dict):
-            self._build_name(name)
+            self._build_name(name, collect_errors)
             self._name = str(self)
 
         # validate completeness (at least one secondary identifier)
         self._check_requirements()
 
-    def _parse_name(self, name):
-        '''parses the sample name (or file name),
-        and calls the builder which validates each element'''
-        m = re.match(SAMPLE_REGEX, name)
-        try:
-            assert m
-        except AssertionError:
-            raise ValueError('Wrong naming format ({})'.format(name))
-        else:
-            constituents = dict(zip(SAMPLE_FIELDS, m.groups()))
-            self._build_name(constituents)
-
-    def _build_name(self, constituents):
+    def _build_name(self, constituents, collect_errors=False):
         '''build the sample name string from a dictionary
         validates construct and each constituent element'''
+        
+        # TODO - aggregate errors (exceptions) if collect_errors is True
+
         for field in SAMPLE_FIELDS:
             if field in constituents.keys() and \
                     constituents[field] is not None:
