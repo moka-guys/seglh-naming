@@ -1,3 +1,7 @@
+'''
+Builds, reads and validates SEGLH sample/analysis naming conventions
+'''
+
 import os
 import sys
 import re
@@ -35,21 +39,6 @@ SAMPLE_FIELDS = [
     'stable',
     'rest'
 ]
-
-
-def get_all_errors(identifier):
-    error = []
-    isValid = False
-    while not isValid:
-        try:
-            sample = Sample(identifier, collect_errors)
-        except Exception as e:
-            error.append(e)
-            # replace the invalid part
-        else:
-            isValid = True
-    if error:
-        raise Exception("\n".join(error))
 
 
 class Sample(object):

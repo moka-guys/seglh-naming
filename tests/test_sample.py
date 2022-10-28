@@ -215,7 +215,7 @@ def test_multiple_errors(multiple_errors):
         for item in match_exceptions:
             with pytest.raises(ValueError, match=item):
                 Sample(samplename)
-                
+
 
 def test_valid_samples(valid_samples):
     assert all([Sample(s) for s in valid_samples])
