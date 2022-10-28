@@ -179,6 +179,15 @@ def field_validation():
         ('Unrecognised characters in parsed name', 'rest', '0-01'),
     ]
 
+
+@pytest.fixture
+def multiple_errors():
+    return [
+        ("NG123_12_324_265254_VCP0R33_Pan0000_S12", ['LibraryPrep name invalid', 'Specimen/DNA number invalid']),
+        ("NG3_12_388_252_VC3_Pan_S12", ['LibraryPrep name invalid', 'Specimen/DNA number invalid',
+                                    'Secondary identifier invalid', 'Panel Name invalid', 'Pan Number invalid']),
+    ]
+
 ####################
 # TESTS ############
 ####################
@@ -199,6 +208,13 @@ def test_field_validation(field_validation):
         else:
             setattr(sample, field, value)
             assert getattr(sample,field) == value
+
+
+def test_multiple_errors(multiple_errors):
+    for samplename, match_exceptions in multiple_errors:
+        for item in match_exceptions:
+            with pytest.raises(ValueError, match=item):
+                Sample(samplename)
 
 
 def test_valid_samples(valid_samples):
