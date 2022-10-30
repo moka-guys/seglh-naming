@@ -7,7 +7,6 @@ import sys
 import re
 import hashlib
 
-
 # salt used to generate anonymised function'
 SALT = 'jdhFeducf2gkFb2jj7hjs345klosboiydbo73u7g390yubfkd'
 
@@ -42,30 +41,40 @@ SAMPLE_FIELDS = [
 
 
 class Sample(object):
-    def __init__(self, name):
+    def __init__(self, **kwargs):
         '''
         parses the sample name (or file name)
         calls the builder which validates each element
         '''
-        self._path = ''
-        if isinstance(name, str):
-            dirs = name.split('/')
-            self._name = dirs[-1]
-            self._path = '/'.join(dirs[:-1])
-            m = re.match(SAMPLE_REGEX, self._name)
-            try:
-                assert m
-            except AssertionError:
-                raise ValueError('Wrong naming format ({})'.format(self._name))
-            else:
-                constituents = dict(zip(SAMPLE_FIELDS, m.groups()))
-                self._build_name(constituents)
-        elif isinstance(name, dict):
-            self._build_name(name)
-            self._name = str(self)
+        self._path = kwargs.get('path')
+        self._build_name(kwargs)
 
         # validate completeness (at least one secondary identifier)
         self._check_requirements()
+
+    @classmethod
+    def fromstring(cls, name):
+        assert isinstance(name, str)
+        dirs = name.split('/')
+        name = dirs[-1]
+        path = '/'.join(dirs[:-1])
+        m = re.match(SAMPLE_REGEX, name)
+        try:
+            assert m
+        except AssertionError:
+            raise ValueError('Wrong naming format ({})'.format(name))
+        else:
+            constituents = dict(zip(SAMPLE_FIELDS, m.groups()))
+            constituents['name'] = name
+            constituents['path'] = path
+            return cls(**constituents)
+
+    @classmethod
+    def fromdict(cls, constituents):
+        assert isinstance(constituents, dict)
+        if constituents.get('path') is None:
+            constituents['path'] = ''
+        return cls(**constituents)
 
     def _build_name(self, constituents):
         '''
@@ -73,7 +82,7 @@ class Sample(object):
         validate construct and each constituent element
         aggregates errors for different fields
         '''
-        collected_errors=[]
+        collected_errors = []
         for field in SAMPLE_FIELDS:
             try:
                 if field in constituents.keys() and \
@@ -133,7 +142,7 @@ class Sample(object):
             self.samplesheetindex,
             self.readnumber,
             self.stable
-        ]))+self.rest
+        ])) + self.rest
         return os.path.join(self.path, filename)
 
     def file_extension(self, include_compression=True):
@@ -157,20 +166,11 @@ class Sample(object):
         '''
         A stable cryptographic hash to obfuscate sample name if required
         '''
-        s = str(self)+SALT
+        s = str(self) + SALT
         s_encoded = s.encode('utf-8)')
         h = hashlib.new('sha256')
         h.update(s_encoded)
         return h.hexdigest()
-
-    # check if any elment has been modified
-    @property
-    def is_modified(self):
-        '''
-        returns True if any constituent part of the sample name
-        has been modified after the initial parsing
-        '''
-        return not self._name.startswith(str(self))
 
     # check if is a  file name
     @property
