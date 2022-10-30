@@ -53,9 +53,9 @@ class Sample(object):
         self._check_requirements()
 
     @classmethod
-    def fromstring(cls, name):
-        assert isinstance(name, str)
-        dirs = name.split('/')
+    def from_string(cls, fullname):
+        assert isinstance(fullname, str)
+        dirs = fullname.split('/')
         name = dirs[-1]
         path = '/'.join(dirs[:-1])
         m = re.match(SAMPLE_REGEX, name)
@@ -70,7 +70,7 @@ class Sample(object):
             return cls(**constituents)
 
     @classmethod
-    def fromdict(cls, constituents):
+    def from_dict(cls, constituents):
         assert isinstance(constituents, dict)
         if constituents.get('path') is None:
             constituents['path'] = ''

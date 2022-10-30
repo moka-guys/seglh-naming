@@ -228,19 +228,19 @@ def multiple_errors():
 def test_invalid_samples(invalid_samples):
     for samplename in invalid_samples:
         with pytest.raises(ValueError):
-            Sample.fromstring(samplename)
+            Sample.from_string(samplename)
 
 
 def test_invalid_dict_samples(invalid_dict_samples):
     for samplename in invalid_dict_samples:
         with pytest.raises(ValueError):
-            Sample.fromdict(samplename)
+            Sample.from_dict(samplename)
 
 
 def test_field_validation(field_validation):
     s = "NGS123_12_382398_003245_VCP0R33_Pan0000_S12_R1"
     for match_exception, field, value in field_validation:
-        sample = Sample.fromstring(s)
+        sample = Sample.from_string(s)
         if match_exception:
             with pytest.raises(ValueError, match=match_exception):
                 setattr(sample, field, value)
@@ -253,42 +253,42 @@ def test_multiple_errors(multiple_errors):
     for samplename, match_exceptions in multiple_errors:
         for item in match_exceptions:
             with pytest.raises(ValueError, match=item):
-                Sample.fromstring(samplename)
+                Sample.from_string(samplename)
 
 
 def test_valid_samples(valid_samples):
-    assert all([Sample.fromstring(s) for s in valid_samples])
+    assert all([Sample.from_string(s) for s in valid_samples])
 
 
 def test_valid_dict_samples(valid_dict_samples):
-    assert all([Sample.fromdict(s) for s in valid_dict_samples])
+    assert all([Sample.from_dict(s) for s in valid_dict_samples])
 
 
 def test_constituents(constituents):
     for fi, c, result in constituents:
-        assert getattr(Sample.fromstring(fi), c) == result
+        assert getattr(Sample.from_string(fi), c) == result
 
 
 def test_sample_reconstruction(valid_samples):
     for s in valid_samples:
         if isinstance(s, str):
-            assert s.startswith(str(Sample.fromstring(s)))
+            assert s.startswith(str(Sample.from_string(s)))
 
 
 def test_full_reconstruction(valid_samples):
     for s in valid_samples:
         if isinstance(s, str):
-            assert s == repr(Sample.fromstring(s))
+            assert s == repr(Sample.from_string(s))
 
 
 def test_file_extension(file_names):
     for fi, z, ext in file_names:
-        assert Sample.fromstring(fi).file_extension(z) == ext
+        assert Sample.from_string(fi).file_extension(z) == ext
 
 
 def test_hashed(valid_samples):
     for s in valid_samples:
-        assert Sample.fromstring(s).hash() != str(Sample.fromstring(s))
+        assert Sample.from_string(s).hash() != str(Sample.from_string(s))
 
 #
 # def test_modified(valid_samples):
@@ -301,7 +301,7 @@ def test_hashed(valid_samples):
 
 def test_file_paths(file_paths):
     for s, is_file, path in file_paths:
-        sample = Sample.fromstring(s)
+        sample = Sample.from_string(s)
         assert sample.is_file == is_file
         assert sample.path == path
         if isinstance(s, str):
@@ -310,7 +310,7 @@ def test_file_paths(file_paths):
 
 def test_file_dict_paths(file_dict_paths):
     for s, is_file, path in file_dict_paths:
-        sample = Sample.fromdict(s)
+        sample = Sample.from_dict(s)
         assert sample.is_file == is_file
         assert sample.path == path
         if isinstance(s, str):
