@@ -48,9 +48,14 @@ class Sample(object):
         '''
         self._path = kwargs.get('path')
         self._build_name(kwargs)
-
+        self._is_modified=False
         # validate completeness (at least one secondary identifier)
         self._check_requirements()
+
+    def __setattr__(self, key, value):
+        if key != '_is_modified':
+            self._is_modified = True
+        super(Sample, self).__setattr__(key, value)
 
     @classmethod
     def from_string(cls, fullname):
@@ -171,6 +176,15 @@ class Sample(object):
         h = hashlib.new('sha256')
         h.update(s_encoded)
         return h.hexdigest()
+
+    # check if any elment has been modified
+    @property
+    def is_modified(self):
+        '''
+        returns True if any constituent part of the sample name
+        has been modified after the initial parsing
+        '''
+        return self.is_modified
 
     # check if is a  file name
     @property

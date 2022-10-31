@@ -290,13 +290,13 @@ def test_hashed(valid_samples):
     for s in valid_samples:
         assert Sample.from_string(s).hash() != str(Sample.from_string(s))
 
-#
-# def test_modified(valid_samples):
-#     for s in valid_samples:
-#         sample = Sample.fromstring(s)
-#         assert not sample.is_modified
-#         sample.id1 = '0101010101'
-#         assert sample.is_modified
+
+def test_modified(valid_samples):
+    for s in valid_samples:
+        sample = Sample.from_string(s)
+        assert not sample._is_modified
+        sample.id1 = '0101010101'
+        assert sample._is_modified
 
 
 def test_file_paths(file_paths):
