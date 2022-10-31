@@ -83,7 +83,7 @@ class Sample(object):
 
     def _build_name(self, constituents):
         '''
-        build sample name string from dictionary
+        build sample name string
         validate construct and each constituent element
         aggregates errors for different fields
         '''
