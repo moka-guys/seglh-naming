@@ -130,3 +130,79 @@ print(sample.file_extension(include_compression=False))
 # vcf
 ```
 
+### Samplesheet
+The samplesheet names are structured as follows and can be accessed by the correponding class property.
+```
+211008_A01229_0040_AHKGTFDRXY_SampleSheet.csv
++====== +== +== += +==+=============
+|       |   |   |  |  |
+|       |   |   |  |  +- fileext (.csv, required)
+|       |   |   |  +---- samplesheetstr (required (exact))
+|       |   |   +------- flowcellid (alphanumeric)
+|       |   +----------- autoincrno (4 digits)
+|       +--------------- sequencerid
++----------------------- date (6 digits)
+```
+
+#### Validation
+Validate a samplesheet name / file path for conformity (formatting, required identifiers).
+If validation fails, a _ValueError_ exception is raised.
+
+```python
+from seglh_naming.samplesheet import Samplesheet
+
+# validate sample name
+samplesheet = Samplesheet.from_string('211108_A01229_0040_AHKGTFDRXY_SampleSheet.csv')
+
+samplesheet = Samplesheet.from_string('21110_A01229_0040_AHKGTFDRXY_SampleSheet.csv')
+# ValueError: Date invalid (21110)
+```
+
+#### Samplesheet name and constituent parts
+Get the minimal required samplesheet name from filename.
+
+```python
+from seglh_naming.samplesheet import Samplesheet
+
+samplesheet = Samplesheet.from_string('211108_A01229_0040_AHKGTFDRXY_SampleSheet.csv')
+
+print(samplesheet)
+# 211108_A01229_0040_AHKGTFDRXY_SampleSheet.csv
+
+print(repr(sample))
+# 211108_A01229_0040_AHKGTFDRXY_SampleSheet.csv
+```
+
+Get or edit constituents of samplesheet name
+
+```python
+from seglh_naming.samplesheet import Samplesheet
+
+samplesheet = Samplesheet.from_string('211108_A01229_0040_AHKGTFDRXY_SampleSheet.csv')
+
+samplesheet.sequencerid
+
+# 'A01229'
+
+samplesheet.sequencerid = 'NB552085'
+
+print(samplesheet)
+# 211108_NB552085_0040_AHKGTFDRXY_SampleSheet.csv
+
+print(samplesheet.is_modified)
+# True
+```
+
+#### Deidentify
+Returns a stable identifier for a given sample ID as a salted, cryptographic hash (SHA256).
+
+```python
+from seglh_naming.samplesheet import Samplesheet
+
+print(Samplesheet.from_string('211108_A01229_0040_AHKGTFDRXY_SampleSheet.csv').hash())
+# 4b9259df18af72841419d832988d6ffdd58ec16525b6ccdca908b9e410803c62
+print(Samplesheet.from_string('220401_M02353_0676_000000000-K4669_SampleSheet.csv').hash())
+# 22ed36ee4ec1a858dc46c49d924799f810f055031d4a6a348c6609766a076741
+print(Samplesheet.from_string('220401_NB552085_0188_AHJWL5AFX3_SampleSheet.csv').hash())
+# 6e996e99483f40c3b9ebd52d0f56c672813907bfe58a08d92f4155f5050c86a3
+```
