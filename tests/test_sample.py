@@ -23,7 +23,8 @@ def valid_samples():
         "NGS123_12_382398_265ER254_VCP0R33_Pan0000_S12_R1",
         "TSO123_00_234234_9872349_UP01_Pan4969_CopyNumberVariants.vcf",
         "NGS123_00_234234_123456789123456_UP01_Pan4969", # non-tso longer than tso requirements
-        "ONC123_00_234234_123243_Pan0000.realign.bam"
+        "ONC123_00_234234_123243_Pan0000.realign.bam",
+        "DMLPA001_00_000000_00000_XX_U_dmlpa_Pan5098" # proposed digital MPLA fastq name
     ]
 
 
@@ -154,19 +155,6 @@ def file_dict_paths():
          }, False, '')
     ]
 
-
-@pytest.fixture
-def file_paths():
-    return [
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.haplotyper.vcf",
-         True, ''),
-        ("/some/path/NGS123_12_382398_JD_M_VCP0R33_Pan0000.haplotyper.vcf",
-         True, "/some/path"),
-        ("/some/path/NGS123_12_382398_JD_M_VCP0R33_Pan0000",
-         True, "/some/path"),
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001",
-         False, '')
-    ]
 
 @pytest.fixture
 def field_validation():
