@@ -157,19 +157,6 @@ def file_dict_paths():
 
 
 @pytest.fixture
-def file_paths():
-    return [
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.haplotyper.vcf",
-         True, ''),
-        ("/some/path/NGS123_12_382398_JD_M_VCP0R33_Pan0000.haplotyper.vcf",
-         True, "/some/path"),
-        ("/some/path/NGS123_12_382398_JD_M_VCP0R33_Pan0000",
-         True, "/some/path"),
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001",
-         False, '')
-    ]
-
-@pytest.fixture
 def field_validation():
     return [
         (None, 'libraryprep', 'NGS232b'),

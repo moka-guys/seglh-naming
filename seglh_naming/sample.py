@@ -83,7 +83,7 @@ class Sample(object):
 
     def _build_name(self, constituents):
         '''
-        build sample name string from dictionary
+        build sample name string
         validate construct and each constituent element
         aggregates errors for different fields
         '''
@@ -172,7 +172,7 @@ class Sample(object):
         A stable cryptographic hash to obfuscate sample name if required
         '''
         s = str(self) + SALT
-        s_encoded = s.encode('utf-8)')
+        s_encoded = s.encode('utf-8')
         h = hashlib.new('sha256')
         h.update(s_encoded)
         return h.hexdigest()
@@ -184,7 +184,7 @@ class Sample(object):
         returns True if any constituent part of the sample name
         has been modified after the initial parsing
         '''
-        return self.is_modified
+        return self._is_modified
 
     # check if is a  file name
     @property
@@ -394,4 +394,4 @@ class Sample(object):
 
 
 if __name__ == "__main__":
-    Sample(sys.argv[1])
+    Sample.from_string(sys.argv[1])
