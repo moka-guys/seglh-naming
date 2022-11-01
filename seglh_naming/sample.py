@@ -394,4 +394,4 @@ class Sample(object):
 
 
 if __name__ == "__main__":
-    Sample(sys.argv[1])
+    Sample.from_string(sys.argv[1])

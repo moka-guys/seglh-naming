@@ -196,7 +196,7 @@ class Samplesheet(object):
 
     @flowcellid.setter
     def flowcellid(self, value):
-        if value and not re.match(r'^[0]{9}-[A-Z0-9]{5}|[A-Z0-9]{10}$', value):
+        if not re.match(r'^([0]{9}-[A-Z0-9]{5}|[A-Z0-9]{10})$', value):
             raise ValueError("Flowcell ID invalid ({})".format(value))
         self._flowcellid = value
 
@@ -210,7 +210,7 @@ class Samplesheet(object):
 
     @samplesheetstr.setter
     def samplesheetstr(self, value):
-        if value and not re.match(r'^SampleSheet$', value):
+        if not re.match(r'^SampleSheet$', value):
             raise ValueError("SampleSheet string invalid ({})".format(value))
         self._samplesheetstr = value
 
@@ -224,10 +224,10 @@ class Samplesheet(object):
 
     @fileext.setter
     def fileext(self, value):
-        if value and not re.match(r'^.csv$', value):
+        if not re.match(r'^.csv$', value):
             raise ValueError("File extension invalid ({})".format(value))
         self._fileext = value
 
 
 if __name__ == "__main__":
-    Samplesheet(sys.argv[1])
+    Samplesheet.from_string(sys.argv[1])
