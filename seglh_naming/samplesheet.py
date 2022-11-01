@@ -196,7 +196,7 @@ class Samplesheet(object):
 
     @flowcellid.setter
     def flowcellid(self, value):
-        if value and not re.match(r'^[A-Z0-9\-]{5,}$', value):
+        if value and not re.match(r'^[0]{9}-[A-Z0-9]{5}|[A-Z0-9]{10}$', value):
             raise ValueError("Flowcell ID invalid ({})".format(value))
         self._flowcellid = value
 
