@@ -24,7 +24,9 @@ def valid_samples():
         "TSO123_00_234234_9872349_UP01_Pan4969_CopyNumberVariants.vcf",
         "NGS123_00_234234_123456789123456_UP01_Pan4969", # non-tso longer than tso requirements
         "ONC123_00_234234_123243_Pan0000.realign.bam",
-        "DMLPA001_00_000000_00000_XX_U_dmlpa_Pan5098" # proposed digital MPLA fastq name
+        "DMLPA001_00_000000_00000_XX_U_dmlpa_Pan5098", # proposed digital MPLA fastq name
+        "TSO22039_01_220246_HD200_Pan5085",
+        "NGS514ARpt_08_136819_NA12878_U_WES87SKIN_Pan4940"
     ]
 
 
