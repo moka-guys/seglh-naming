@@ -13,7 +13,7 @@ SALT = 'jdhFeducf2gkFb2jj7hjs345klosboiydbo73u7g390yubfkd'
 # sample_name regular expression
 SAMPLE_REGEX = (
     r'([^_]+)_(\d+)_(\d[^_]+)'  # Library_number_DNA
-    r'(?:_(\d[^_]+))?(?:_([^_]{2}))?(?:_([A-Za-z]))?'  # secondary identifiers
+    r'(?:_((?:[A-Z]{2}|\d)\d[^_]+))?(?:_([^_]{2}))?(?:_([A-Za-z]))?'  # secondary identifiers
     r'(?:_([^_]+))?'  # Human readable panel name
     r'_(Pan[^_\.]*)'  # pan number
     r'(?:_(R[A-Z0-9]{2}))?'  # ODS code
@@ -261,7 +261,7 @@ class Sample(object):
 
     @id2.setter
     def id2(self, value):
-        if value and not re.match(r'^[a-zA-Z0-9-]{5,}$', value):
+        if value and not re.match(r'^(:?HD|NA|\d)[a-zA-Z0-9-]{3,}$', value):
             raise ValueError("Secondary identifier invalid ({})".format(value))
         self._id2 = value
 
