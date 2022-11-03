@@ -13,7 +13,8 @@ SALT = 'jdhFeducf2gkFb2jj7hjs345klosboiydbo73u7g390yubfkd'
 # sample_name regular expression
 SAMPLE_REGEX = (
     r'([^_]+)_(\d+)_(\d[^_]+)'  # Library_number_DNA
-    r'(?:_((?:[A-Z]{2}|\d)\d[^_]+))?(?:_([^_]{2}))?(?:_([A-Za-z]))?'  # secondary identifiers
+    r'(?:_((?:[A-Z]{2})?\d[^_]+))?'  # id2
+    r'(?:_([^_]{2}))?(?:_([A-Za-z]))?'  # initials, sex
     r'(?:_([^_]+))?'  # Human readable panel name
     r'_(Pan[^_\.]*)'  # pan number
     r'(?:_(R[A-Z0-9]{2}))?'  # ODS code
@@ -48,7 +49,7 @@ class Sample(object):
         '''
         self._path = kwargs.get('path')
         self._build_name(kwargs)
-        self._is_modified=False
+        self._is_modified = False
         # validate completeness (at least one secondary identifier)
         self._check_requirements()
 
@@ -106,11 +107,13 @@ class Sample(object):
         checks total identifier length of TSO samples to be below 40 characters
         '''
         # min 2 identifiers
-        enough_identifiers = self.id1 and (self.id2 or (self.initials and self.sex))
+        enough_identifiers = self.id1 and \
+            (self.id2 or (self.initials and self.sex))
         if not enough_identifiers:
             raise ValueError('Not enough identifiers in sample name')
         # TSO max 40 characters
-        acceptable_length = not self.libraryprep.startswith('TSO') or len(str(self)) <= 40
+        acceptable_length = not self.libraryprep.startswith('TSO') or \
+            len(str(self)) <= 40
         if not acceptable_length:
             raise ValueError('TSO sample name too long')
 
