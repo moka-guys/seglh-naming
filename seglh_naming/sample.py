@@ -48,6 +48,7 @@ class Sample(object):
         calls the builder which validates each element
         '''
         self._path = kwargs.get('path')
+        self._name = kwargs.get('name')
         self._build_name(kwargs)
         self._is_modified = False
         # validate completeness (at least one secondary identifier)
@@ -110,12 +111,12 @@ class Sample(object):
         enough_identifiers = self.id1 and \
             (self.id2 or (self.initials and self.sex))
         if not enough_identifiers:
-            raise ValueError('Not enough identifiers in sample name')
+            raise ValueError('Not enough identifiers in sample name ({})'.format(self._name))
         # TSO max 40 characters
         acceptable_length = not self.libraryprep.startswith('TSO') or \
             len(str(self)) <= 40
         if not acceptable_length:
-            raise ValueError('TSO sample name too long')
+            raise ValueError('TSO sample name too long ({})'.format(self._name))
 
     def __str__(self):
         '''
