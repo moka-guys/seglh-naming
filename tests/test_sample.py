@@ -11,6 +11,7 @@ def valid_samples():
     return [
         "ONC22070_05_222662_2232170_SWIFT57_Pan4082", # ONC sample
         "SNP70_11_265254_4031238805_DM_M_SNPIDv2_Pan4009", # SNP sample
+        "SNP70_110_265254_4031238805_DM_M_SNPIDv2_Pan4009",
         "ADX22051_04_222656_2231985_NSCLC_Pan4396", # ADX sample
         "NGS514B_29_287637_LE_M_VCP1R134StG_Pan4821", # custom panels sample
         "NGS514ARpt_06_286962_HS_M_WES87SKIN_Pan4940", # WES skin sample
@@ -52,6 +53,7 @@ def invalid_samples():
         "NG123_12_382398_265254_VCP0R33_Pan0000_S12", # incorrect library prep id format (needs 3 letters)
         "NGS123_382398_265254_VCP0R33_Pan0000_S12", # missing sample count
         "NGS123__382398_265254_VCP0R33_Pan0000_S12", # missing sample count (/2 underscores)
+        "SNP70_1100_265254_4031238805_DM_M_SNPIDv2_Pan4009", # sample count too high
         "NGS123_12__382398_265254_VCP0R33_Pan0000_S12", # double underscore
         "NGS123_12_388_265254_VCP0R33_Pan0000_S12", # invalid specimen number
         "ONC22070_05_EK222662_2232170_SWIFT57_Pan4082",  # Invalid specimen number (not numeric)

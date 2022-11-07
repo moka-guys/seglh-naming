@@ -237,7 +237,7 @@ class Sample(object):
 
     @samplecount.setter
     def samplecount(self, value):
-        if not re.match(r'^\d{2}$', value):
+        if not re.match(r'^\d{2,3}$', value):
             raise ValueError("SampleCount invalid ({})".format(value))
         self._samplecount = value
 
