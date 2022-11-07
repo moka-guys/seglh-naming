@@ -307,7 +307,7 @@ class Sample(object):
 
     @panelname.setter
     def panelname(self, value):
-        if value and not re.match(r'^[a-zA-Z0-9]{4,}$', value):
+        if value and not re.match(r'^[a-zA-Z0-9]{3,}$', value):
             raise ValueError("Panel Name invalid ({})".format(value))
         self._panelname = value
 
