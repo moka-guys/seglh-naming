@@ -13,7 +13,7 @@ SALT = 'jdhFeducf2gkFb2jj7hjs345klosboiydbo73u7g390yubfkd'
 # sample_name regular expression
 SAMPLE_REGEX = (
     r'([^_]+)_(\d+)_(\d[^_]+)'  # Library_number_DNA
-    r'(?:_((?:[A-Z]{2})?\d[^_]+))?'  # id2
+    r'(?:_((?:[A-Z]{2,3})?\d[^_]+))?'  # id2
     r'(?:_([^_]{2}))?(?:_([A-Za-z]))?'  # initials, sex
     r'(?:_([^_]+))?'  # Human readable panel name
     r'_(Pan[^_\.]*)'  # pan number
@@ -265,7 +265,7 @@ class Sample(object):
 
     @id2.setter
     def id2(self, value):
-        if value and not re.match(r'^(:?HD|NA|\d)[a-zA-Z0-9-]{3,}$', value):
+        if value and not re.match(r'^(:?HD|NA|NTC?|SC|\d)[a-zA-Z0-9-]{3,}$', value):
             raise ValueError("Secondary identifier invalid ({})".format(value))
         self._id2 = value
 
