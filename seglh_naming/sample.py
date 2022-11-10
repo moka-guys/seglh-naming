@@ -265,7 +265,7 @@ class Sample(object):
 
     @id2.setter
     def id2(self, value):
-        if value and not re.match(r'^(:?HD|NA|NTC?|SC|\d)[a-zA-Z0-9-]{3,}$', value):
+        if value and not re.match(r'^(:?HD|NA|NT?C|SC|\d)[a-zA-Z0-9]{3,}$', value):
             raise ValueError("Secondary identifier invalid ({})".format(value))
         self._id2 = value
 
