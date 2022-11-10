@@ -29,7 +29,6 @@ def valid_samples():
         "DMLPA001_00_000000_00000_XX_U_dmlpa_Pan5098",  # Proposed digital MPLA fastq name
         "TSO22039_01_220246_HD200_Pan5085",
         "NGS514ARpt_08_136819_NA12878_U_WES87SKIN_Pan4940",
-        "ONC22067_02_000000_NT000_SWIFT57_Pan4082",
         "ONC22067_02_000000_NTC000_SWIFT57_Pan4082",
         "TSO22040_12_222704_NA000_Pan5085",
         "TSO22040_48_228291_4232_Pan5085",
@@ -82,7 +81,9 @@ def invalid_samples():
         "ONC22067_01_NTCcon_57G_SWIFT57_Pan4082",  # Disallowed id1 and id2
         "ONC22070_05_EK222662_2232170_SWIFT57_Pan4082",  # Disallowed id1
         "TSO22040_48_T228291_HO4232_Pan5085",  # Disallowed id1 and id2
-        "ADX22050_01_221975_Mpx_FFPEControl_Pan4396"  # Disallowed id2
+        "ADX22050_01_221975_Mpx_FFPEControl_Pan4396",  # Disallowed id2
+        "SNP70_11_265254_4031238-805_DM_M_SNPIDv2_Pan4009",  # Disallowed id2
+        "ONC22067_02_000000_NT000_SWIFT57_Pan4082"  # Disallowed id2
     ]
 
 
