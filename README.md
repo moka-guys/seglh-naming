@@ -75,14 +75,14 @@ The following additional requirements _must_ also be met:
 
 ```
 211008_A01229_0040_AHKGTFDRXY_SampleSheet.csv
-+====== +== +== += +==+=============
-|       |   |   |  |  |
-|       |   |   |  |  +- fileext
-|       |   |   |  +---- samplesheetstr
-|       |   |   +------- flowcellid
-|       |   +----------- autoincrno
-|       +--------------- sequencerid
-+----------------------- date
++===== +===== +=== +========= +========== +==
+|      |      |    |          |           |
+|      |      |    |          |           +- fileext
+|      |      |    |          +------------- samplesheetstr
+|      |      |    +------------------------ flowcellid
+|      |      +----------------------------- autoincrno
+|      +------------------------------------ sequencerid
++------------------------------------------- date (YYMMDD)
 ```
 
 #### Requirements
