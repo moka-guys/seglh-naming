@@ -38,6 +38,7 @@ def valid_samples():
         "NGS463_39_88997_RM_F_VCP2R208ViaGP02_Pan4149",
         "NGS372_22_6113_NF_F_VCP2R208Via_Pan4011",
     ]
+
 @pytest.fixture
 def valid_dict_samples():
     return [

@@ -33,6 +33,9 @@ SAMPLESHEET_FIELDS = [
 
 
 class Samplesheet(object):
+    """
+    Builds, reads and validates SEGLH samplesheet naming conventions
+    """
     def __init__(self, **kwargs):
         '''
         parses the samplesheet name (or file name)
