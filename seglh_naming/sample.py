@@ -13,7 +13,8 @@ SALT = 'jdhFeducf2gkFb2jj7hjs345klosboiydbo73u7g390yubfkd'
 # sample_name regular expression
 SAMPLE_REGEX = (
     r'([^_]+)_(\d+)_(\d[^_]+)'  # Library_number_DNA
-    r'(?:_(\d[^_]+))?(?:_([^_]{2}))?(?:_([A-Za-z]))?'  # secondary identifiers
+    r'(?:_((?:[A-Z]{2,3})?\d[^_]+))?'  # id2
+    r'(?:_([^_]{2}))?(?:_([A-Za-z]))?'  # initials, sex
     r'(?:_([^_]+))?'  # Human readable panel name
     r'_(Pan[^_\.]*)'  # pan number
     r'(?:_(R[A-Z0-9]{2}))?'  # ODS code
@@ -47,8 +48,9 @@ class Sample(object):
         calls the builder which validates each element
         '''
         self._path = kwargs.get('path')
+        self._name = kwargs.get('name')
         self._build_name(kwargs)
-        self._is_modified=False
+        self._is_modified = False
         # validate completeness (at least one secondary identifier)
         self._check_requirements()
 
@@ -106,13 +108,15 @@ class Sample(object):
         checks total identifier length of TSO samples to be below 40 characters
         '''
         # min 2 identifiers
-        enough_identifiers = self.id1 and (self.id2 or (self.initials and self.sex))
+        enough_identifiers = self.id1 and \
+            (self.id2 or (self.initials and self.sex))
         if not enough_identifiers:
-            raise ValueError('Not enough identifiers in sample name')
+            raise ValueError('Not enough identifiers in sample name ({})'.format(self._name))
         # TSO max 40 characters
-        acceptable_length = not self.libraryprep.startswith('TSO') or len(str(self)) <= 40
+        acceptable_length = not self.libraryprep.startswith('TSO') or \
+            len(str(self)) <= 40
         if not acceptable_length:
-            raise ValueError('TSO sample name too long')
+            raise ValueError('TSO sample name too long ({})'.format(self._name))
 
     def __str__(self):
         '''
@@ -233,7 +237,7 @@ class Sample(object):
 
     @samplecount.setter
     def samplecount(self, value):
-        if not re.match(r'^\d{2}$', value):
+        if not re.match(r'^\d{2,3}$', value):
             raise ValueError("SampleCount invalid ({})".format(value))
         self._samplecount = value
 
@@ -261,7 +265,7 @@ class Sample(object):
 
     @id2.setter
     def id2(self, value):
-        if value and not re.match(r'^[a-zA-Z0-9-]{5,}$', value):
+        if value and not re.match(r'^(:?HD|NA|NT?C|SC|\d)[a-zA-Z0-9]{3,}$', value):
             raise ValueError("Secondary identifier invalid ({})".format(value))
         self._id2 = value
 
@@ -303,7 +307,7 @@ class Sample(object):
 
     @panelname.setter
     def panelname(self, value):
-        if value and not re.match(r'^[a-zA-Z0-9]{4,}$', value):
+        if value and not re.match(r'^[a-zA-Z0-9]{3,}$', value):
             raise ValueError("Panel Name invalid ({})".format(value))
         self._panelname = value
 
