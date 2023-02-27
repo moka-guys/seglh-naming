@@ -39,7 +39,7 @@ NGS123_12_382398_P9392B_JD_M_VCP0R33_Pan0000_RJZ_S12_R1_001.realigned.bam
 |      |  |      |      |  | |       |       |   +----------- samplesheetindex (optional)
 |      |  |      |      |  | |       |       +--------------- ods (ODS code, optional)
 |      |  |      |      |  | |       +----------------------- panelnumber (Pan Number)
-|      |  |      |      |  | +------------------------------- panelname (Human readable Pan number)
+|      |  |      |      |  | +------------------------------- panelname (Human readable Pan number, optional)
 |      |  |      |      |  +--------------------------------- sex (optional)
 |      |  |      |      +------------------------------------ initials (secondary identifier, optional)
 |      |  |      +------------------------------------------- id2 (secondary identifier, optional)

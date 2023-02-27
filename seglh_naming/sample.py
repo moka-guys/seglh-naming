@@ -42,10 +42,13 @@ SAMPLE_FIELDS = [
 
 
 class Sample(object):
+    """
+    Builds, reads and validates SEGLH sample naming conventions.
+    """
     def __init__(self, **kwargs):
         '''
-        parses the sample name (or file name)
-        calls the builder which validates each element
+        Parses the sample name (or file name)
+        Calls the builder which validates each element
         '''
         self._path = kwargs.get('path')
         self._name = kwargs.get('name')
@@ -61,23 +64,29 @@ class Sample(object):
 
     @classmethod
     def from_string(cls, fullname):
+        """
+        Get sample name constituents from string input
+        """
         assert isinstance(fullname, str)
         dirs = fullname.split('/')
         name = dirs[-1]
         path = '/'.join(dirs[:-1])
-        m = re.match(SAMPLE_REGEX, name)
+        match = re.match(SAMPLE_REGEX, name)
         try:
-            assert m
+            assert match
         except AssertionError:
             raise ValueError('Wrong naming format ({})'.format(name))
         else:
-            constituents = dict(zip(SAMPLE_FIELDS, m.groups()))
+            constituents = dict(zip(SAMPLE_FIELDS, match.groups()))
             constituents['name'] = name
             constituents['path'] = path
             return cls(**constituents)
 
     @classmethod
     def from_dict(cls, constituents):
+        """
+        Get sample name constituents from dictionary input
+        """
         assert isinstance(constituents, dict)
         if constituents.get('path') is None:
             constituents['path'] = ''
@@ -104,8 +113,8 @@ class Sample(object):
 
     def _check_requirements(self):
         '''
-        checks if sample name contains at least 2 patient identifiers
-        checks total identifier length of TSO samples to be below 40 characters
+        Checks if sample name contains at least 2 patient identifiers
+        Checks total identifier length of TSO samples to be below 40 characters
         '''
         # min 2 identifiers
         enough_identifiers = self.id1 and \
@@ -136,7 +145,7 @@ class Sample(object):
 
     def __repr__(self):
         '''
-        returns the full parsed string
+        Returns the full parsed string
         '''
         filename = "_".join(filter(lambda x: x, [
             self.libraryprep,
@@ -156,7 +165,7 @@ class Sample(object):
 
     def file_extension(self, include_compression=True):
         '''
-        extracts the file extension if any
+        Extracts the file extension if any
         '''
         if not self.rest:
             raise ValueError("Not a file name ({})".format(self.name))
@@ -251,7 +260,7 @@ class Sample(object):
 
     @id1.setter
     def id1(self, value):
-        if not re.match(r'^\d{6,}', value):
+        if not re.match(r'^\d{4,6}', value):
             raise ValueError("Specimen/DNA number invalid ({})".format(value))
         self._id1 = value
 
