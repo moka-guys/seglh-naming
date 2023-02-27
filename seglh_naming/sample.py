@@ -251,7 +251,7 @@ class Sample(object):
 
     @id1.setter
     def id1(self, value):
-        if not re.match(r'^\d{6,}', value):
+        if not re.match(r'^\d{4,6}', value):
             raise ValueError("Specimen/DNA number invalid ({})".format(value))
         self._id1 = value
 

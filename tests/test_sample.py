@@ -34,7 +34,9 @@ def valid_samples():
         "TSO22040_48_228291_4232_Pan5085",
         "ONC22070_05_222662_2232170_SWIFT57_Pan4082",
         "ADX22050_01_221975_SC07100496_MpxFFPEControl_Pan4396",
-        "ADX22050_01_221975_SC07100496_FFPEControl_Pan4396"
+        "ADX22050_01_221975_SC07100496_FFPEControl_Pan4396",
+        "NGS463_39_88997_RM_F_VCP2R208ViaGP02_Pan4149",
+        "NGS372_22_6113_NF_F_VCP2R208Via_Pan4011",
     ]
 @pytest.fixture
 def valid_dict_samples():
@@ -83,7 +85,8 @@ def invalid_samples():
         "TSO22040_48_T228291_HO4232_Pan5085",  # Disallowed id1 and id2
         "ADX22050_01_221975_Mpx_FFPEControl_Pan4396",  # Disallowed id2
         "SNP70_11_265254_4031238-805_DM_M_SNPIDv2_Pan4009",  # Disallowed id2
-        "ONC22067_02_000000_NT000_SWIFT57_Pan4082"  # Disallowed id2
+        "ONC22067_02_000000_NT000_SWIFT57_Pan4082",  # Disallowed id2
+        "NGS372_22_611_NF_F_VCP2R208Via_Pan4011",  # ID1 too short
     ]
 
 
