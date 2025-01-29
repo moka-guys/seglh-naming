@@ -67,7 +67,7 @@ spaced using a single underscore only.
 | panelnumber       | 'Pan' followed by 2+ digits                                                                                                             | Pan2345, Pan3456                                        |
 
 The following additional requirements _must_ also be met: 
-* TSO500 sample names must not be longer than 40 characters
+* TSO500 or MSK sample names must not be longer than 40 characters
 * The sample name _must_ contain id1
 * The sample name _must also_ contain: id2, _or_ both initials and sex
 

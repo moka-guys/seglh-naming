@@ -25,6 +25,7 @@ def valid_samples():
         "NGS123_12_382398_265ER254_VCP0R33_Pan0000_S12_R1",
         "TSO123_00_234234_9872349_UP01_Pan4969_CopyNumberVariants.vcf",
         "NGS123_00_234234_123456789123456_UP01_Pan4969",  # Non-tso longer than tso requirements
+        "MSK25001_01_123456_1234567N_Pan5180", # MSK no longer than msk requirements   
         "ONC123_00_234234_123243_Pan0000.realign.bam",
         "DMLPA001_00_000000_00000_XX_U_dmlpa_Pan5098",  # Proposed digital MPLA fastq name
         "TSO22039_01_220246_HD200_Pan5085",
@@ -80,6 +81,7 @@ def invalid_samples():
         "NGS123_12_382398_Pan0000_S12_R1",  # Not enough identifiers
         "NGS514B_29_287637_M_VCP1R134StG_Pan4821",  # Not enough identifiers
         "TSO123_00_234234_TOOLONGNAMEFORTSO_UP01_Pan4969",  # Name too long for tso requirements
+        "MSK25001_01_123456_123456789999999N_Pan5180", # Name too long for MSK requirements
         "TSO22040_12_222704_NA_Pan5085",  # Disallowed id2
         "ONC22067_01_NTCcon_57G_SWIFT57_Pan4082",  # Disallowed id1 and id2
         "ONC22070_05_EK222662_2232170_SWIFT57_Pan4082",  # Disallowed id1
