@@ -114,7 +114,7 @@ class Sample(object):
     def _check_requirements(self):
         '''
         Checks if sample name contains at least 2 patient identifiers
-        Checks total identifier length of TSO samples to be below 40 characters
+        Checks total identifier length of MSK/TSO samples to be below 40 characters
         '''
         # min 2 identifiers
         enough_identifiers = self.id1 and \
@@ -122,10 +122,11 @@ class Sample(object):
         if not enough_identifiers:
             raise ValueError('Not enough identifiers in sample name ({})'.format(self._name))
         # TSO max 40 characters
-        acceptable_length = not self.libraryprep.startswith('TSO') or \
+        acceptable_length =  (not self.libraryprep.startswith('MSK') and \
+                              not self.libraryprep.startswith('TSO')) or \
             len(str(self)) <= 40
         if not acceptable_length:
-            raise ValueError('TSO sample name too long ({})'.format(self._name))
+            raise ValueError('TSO or MSK sample name too long ({})'.format(self._name))
 
     def __str__(self):
         '''
