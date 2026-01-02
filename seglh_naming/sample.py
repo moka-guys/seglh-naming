@@ -12,11 +12,11 @@ SALT = 'jdhFeducf2gkFb2jj7hjs345klosboiydbo73u7g390yubfkd'
 
 # sample_name regular expression
 SAMPLE_REGEX = (
-    r'([^_]+)_(\d+)_(\d[^_]+)'  # Library_number_DNA
-    r'(?:_((?:[A-Z]{2,3})?\d[^_]+))?'  # id2
-    r'(?:_([^_]{2}))?(?:_([A-Za-z]))?'  # initials, sex
-    r'(?:_([^_]+))?'  # Human readable panel name
-    r'_(Pan[^_\.]*)'  # pan number
+    r'([^-]+)-(\d+)-(\d[^-]+)'  # Library_number_DNA
+    r'(?:-((?:[A-Z]{2,3})?\d[^-]+))?'  # id2
+    r'(?:-([^-]{2}))?(?:-([A-Za-z]))?'  # initials, sex
+    r'(?:-([^-]+))?'  # Human readable panel name
+    r'-(Pan[^_\.]*)'  # pan number
     r'(?:_(R[A-Z0-9]{2}))?'  # ODS code
     r'(?:_(S\d+)_(R\d))?'  # samplesheet number and read number
     r'(?:_([0-9]{3}))?'  # demultiplex stable number
