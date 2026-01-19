@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='seglh_naming',
-      version='1.1.0',
+      version='1.1.0_rc1',
       description='Python library for SEGLH naming conventions',
       url='http://github.com/moka-guys/seglh-naming',
       author='David Brawand',
