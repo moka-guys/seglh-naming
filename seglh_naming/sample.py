@@ -12,12 +12,12 @@ SALT = 'jdhFeducf2gkFb2jj7hjs345klosboiydbo73u7g390yubfkd'
 
 # sample_name regular expression
 SAMPLE_REGEX = (
-    r'([^_]+)_(\d+)_(\d[^_]+)'  # Library_number_DNA
-    r'(?:_((?:[A-Z]{2,3})?\d[^_]+))?'  # id2
-    r'(?:_([^_]{2}))?(?:_([A-Za-z]))?'  # initials, sex
-    r'(?:_([^_]+))?'  # Human readable panel name
-    r'_(Pan[^_\.]*)'  # pan number
-    r'(?:_(R[A-Z0-9]{2}))?'  # ODS code
+    r'([^-]+)-(\d+)-(\d[^-]+)'  # Library_number_DNA
+    r'(?:-((?:[A-Z]{2,3})?\d[^-]+))?'  # id2
+    r'(?:-([^-]{2}))?(?:-([A-Za-z]))?'  # initials, sex
+    r'(?:-([^-]+))?'  # Human readable panel name
+    r'-(Pan[^_\-\.]*)'  # pan number split with _ or - whatever come earlier
+    r'(?:-(R[A-Z0-9]{2}))?'  # ODS code
     r'(?:_(S\d+)_(R\d))?'  # samplesheet number and read number
     r'(?:_([0-9]{3}))?'  # demultiplex stable number
     r'(.*)$'  # can be followed by more (eg from a filename)
@@ -131,7 +131,7 @@ class Sample(object):
         '''
         Returns the sample name excluding any demultiplex additions
         '''
-        return "_".join(filter(lambda x: x, [
+        return "-".join(filter(lambda x: x, [
             self.libraryprep,
             self.samplecount,
             self.id1,
@@ -147,7 +147,8 @@ class Sample(object):
         '''
         Returns the full parsed string
         '''
-        filename = "_".join(filter(lambda x: x, [
+        # First part: from libraryprep up to ods
+        first_part = "-".join(filter(None, [
             self.libraryprep,
             self.samplecount,
             self.id1,
@@ -156,11 +157,23 @@ class Sample(object):
             self.sex,
             self.panelname,
             self.panelnumber,
-            self.ods,
+            self.ods
+        ]))
+
+        # Second part: the rest
+        second_part = "_".join(filter(None, [
             self.samplesheetindex,
             self.readnumber,
             self.stable
-        ])) + self.rest
+        ]))
+
+        # Combine the two, adding self.rest if present
+        filename = first_part
+        if second_part:
+            filename += "_" + second_part
+        if self.rest:
+            filename += self.rest
+        
         return os.path.join(self.path, filename)
 
     def file_extension(self, include_compression=True):

@@ -9,34 +9,34 @@ from seglh_naming.sample import Sample
 @pytest.fixture
 def valid_samples():
     return [
-        "ONC22070_05_222662_2232170_SWIFT57_Pan4082",  # ONC sample
-        "SNP70_11_265254_4031238805_DM_M_SNPIDv2_Pan4009",  # SNP sample
-        "ADX22051_04_222656_2231985_NSCLC_Pan4396",  # ADX sample
-        "NGS514B_29_287637_LE_M_VCP1R134StG_Pan4821",  # Custom panels sample
-        "NGS514ARpt_06_286962_HS_M_WES87SKIN_Pan4940",  # WES skin sample
-        "TSO22039_04_222480_2230347_Pan5085",  # Recent TSO sample
-        "SNP70_110_265254_4031238805_DM_M_SNPIDv2_Pan4009",
-        "ADX22050_20_222643_2231675_CRC_Pan4396",
-        "NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1",
-        "NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001",
-        "NGS123_12_382398_JD_M_VCP0R33_Pan0000_RJZ_S12_R1",
-        "NGS123_12_382398_JD_M_VCP0R33_Pan0000.fasta",
-        "NGS123_12_382398_265254_VCP0R33_Pan0000_S12_R1",
-        "NGS123_12_382398_265ER254_VCP0R33_Pan0000_S12_R1",
-        "TSO123_00_234234_9872349_UP01_Pan4969_CopyNumberVariants.vcf",
-        "NGS123_00_234234_123456789123456_UP01_Pan4969",  # Non-tso longer than tso requirements
-        "ONC123_00_234234_123243_Pan0000.realign.bam",
-        "DMLPA001_00_000000_00000_XX_U_dmlpa_Pan5098",  # Proposed digital MPLA fastq name
-        "TSO22039_01_220246_HD200_Pan5085",
-        "NGS514ARpt_08_136819_NA12878_U_WES87SKIN_Pan4940",
-        "ONC22067_02_000000_NTC000_SWIFT57_Pan4082",
-        "TSO22040_12_222704_NA000_Pan5085",
-        "TSO22040_48_228291_4232_Pan5085",
-        "ONC22070_05_222662_2232170_SWIFT57_Pan4082",
-        "ADX22050_01_221975_SC07100496_MpxFFPEControl_Pan4396",
-        "ADX22050_01_221975_SC07100496_FFPEControl_Pan4396",
-        "NGS463_39_88997_RM_F_VCP2R208ViaGP02_Pan4149",
-        "NGS372_22_6113_NF_F_VCP2R208Via_Pan4011",
+        "ONC22070-05-222662-2232170-SWIFT57-Pan4082",  # ONC sample
+        "SNP70-11-265254-4031238805-DM-M-SNPIDv2-Pan4009",  # SNP sample
+        "ADX22051-04-222656-2231985-NSCLC-Pan4396",  # ADX sample
+        "NGS514B-29-287637-LE-M-VCP1R134StG-Pan4821",  # Custom panels sample
+        "NGS514ARpt-06-286962-HS-M-WES87SKIN-Pan4940",  # WES skin sample
+        "TSO22039-04-222480-2230347-Pan5085",  # Recent TSO sample
+        "SNP70-110-265254-4031238805-DM-M-SNPIDv2-Pan4009",
+        "ADX22050-20-222643-2231675-CRC-Pan4396",
+        "NGS123-12-382398-JD-M-VCP0R33-Pan0000_S12_R1",
+        "NGS123-12-382398-JD-M-VCP0R33-Pan0000_S12_R1_001",
+        "NGS123-12-382398-JD-M-VCP0R33-Pan0000-RJZ_S12_R1",
+        "NGS123-12-382398-JD-M-VCP0R33-Pan0000.fasta",
+        "NGS123-12-382398-265254-VCP0R33-Pan0000_S12_R1",
+        "NGS123-12-382398-265ER254-VCP0R33-Pan0000_S12_R1",
+        "TSO123-00-234234-9872349-UP01-Pan4969_CopyNumberVariants.vcf",
+        "NGS123-00-234234-123456789123456-UP01-Pan4969",  # Non-tso longer than tso requirements
+        "ONC123-00-234234-123243-Pan0000.realign.bam",
+        "DMLPA001-00-000000-00000-XX-U-dmlpa-Pan5098",  # Proposed digital MPLA fastq name
+        "TSO22039-01-220246-HD200-Pan5085",
+        "NGS514ARpt-08-136819-NA12878-U-WES87SKIN-Pan4940",
+        "ONC22067-02-000000-NTC000-SWIFT57-Pan4082",
+        "TSO22040-12-222704-NA000-Pan5085",
+        "TSO22040-48-228291-4232-Pan5085",
+        "ONC22070-05-222662-2232170-SWIFT57-Pan4082",
+        "ADX22050-01-221975-SC07100496-MpxFFPEControl-Pan4396",
+        "ADX22050-01-221975-SC07100496-FFPEControl-Pan4396",
+        "NGS463-39-88997-RM-F-VCP2R208ViaGP02-Pan4149",
+        "NGS372-22-6113-NF-F-VCP2R208Via-Pan4011",
     ]
 
 @pytest.fixture
@@ -58,36 +58,36 @@ def valid_dict_samples():
 @pytest.fixture
 def invalid_samples():
     return [
-        "NG123_12_382398_265254_VCP0R33_Pan0000_S12",  # Incorrect library prep id format (needs 3 letters)
-        "NGS123_382398_265254_VCP0R33_Pan0000_S12",  # Missing sample count
-        "NGS123__382398_265254_VCP0R33_Pan0000_S12",  # Missing sample count (/2 underscores)
-        "SNP70_1100_265254_4031238805_DM_M_SNPIDv2_Pan4009",  # Sample count too high
-        "NGS123_12__382398_265254_VCP0R33_Pan0000_S12",  # Double underscore
-        "NGS123_12_388_265254_VCP0R33_Pan0000_S12",  # Invalid specimen number
-        "ONC22070_05_EK222662_2232170_SWIFT57_Pan4082",  # Invalid specimen number (not numeric)
-        "NGS123_12_382398_PT3_VCP0R33_Pan0000_S12",  # Invalid secondary identifier
-        "NGS123_12_382398_J_M_VCP0R33_Pan0000_S12_R1",  # Invalid initials
-        "NGS123_12_382398_J3_M_VCP0R33_Pan0000_S12_R1",  # Invalid initials
-        "NGS123_12_382398_J_M_VCP0R33_Pan0000_S12_R1",  # Invalid sex
-        "NGS123_12_382398_J_M_A1_Pan0000_S12_R1",  # Invalid panel name
-        "NGS123_12_382398_JD_M_VCP0R33_Pan000a_S12_R1",  # Invalid pan no
-        "NGS123_12_382398_JD_M_VCP0R33_Pan_S12_R1",  # Invalid pan no
-        "NGS123_12_382398_JD_M_VCP0R33_Pan1_S12_R1",  # Invalid pan no
-        "NGS123_12_382398_265254_Pn0000_S12_R1",  # Invalid pan no
-        "NGS123_12_382398_JD_M_VCP0R33_Pan12_S12_R1.v$f",  # Invalid characters in remainder of parsed string
-        "NGS514B_29_LE_VCP1R134StG_Pan4821",  # Not enough identifiers
-        "ONC22070_05_2232170_Pan4082",  # Not enough identifiers
-        "NGS123_12_382398_Pan0000_S12_R1",  # Not enough identifiers
-        "NGS514B_29_287637_M_VCP1R134StG_Pan4821",  # Not enough identifiers
-        "TSO123_00_234234_TOOLONGNAMEFORTSO_UP01_Pan4969",  # Name too long for tso requirements
-        "TSO22040_12_222704_NA_Pan5085",  # Disallowed id2
-        "ONC22067_01_NTCcon_57G_SWIFT57_Pan4082",  # Disallowed id1 and id2
-        "ONC22070_05_EK222662_2232170_SWIFT57_Pan4082",  # Disallowed id1
-        "TSO22040_48_T228291_HO4232_Pan5085",  # Disallowed id1 and id2
-        "ADX22050_01_221975_Mpx_FFPEControl_Pan4396",  # Disallowed id2
-        "SNP70_11_265254_4031238-805_DM_M_SNPIDv2_Pan4009",  # Disallowed id2
-        "ONC22067_02_000000_NT000_SWIFT57_Pan4082",  # Disallowed id2
-        "NGS372_22_611_NF_F_VCP2R208Via_Pan4011",  # ID1 too short
+        "NG123-12-382398-265254-VCP0R33-Pan0000_S12",  # Incorrect library prep id format (needs 3 letters)
+        "NGS123-382398-265254-VCP0R33-Pan0000_S12",  # Missing sample count
+        "NGS123--382398-265254-VCP0R33-Pan0000_S12",  # Missing sample count (/2 underscores)
+        "SNP70-1100-265254-4031238805-DM-M-SNPIDv2-Pan4009",  # Sample count too high
+        "NGS123-12--382398-265254-VCP0R33-Pan0000_S12",  # Double underscore
+        "NGS123-12-388-265254-VCP0R33-Pan0000_S12",  # Invalid specimen number
+        "ONC22070-05-EK222662-2232170-SWIFT57-Pan4082",  # Invalid specimen number (not numeric)
+        "NGS123-12-382398-PT3-VCP0R33-Pan0000_S12",  # Invalid secondary identifier
+        "NGS123-12-382398-J-M-VCP0R33-Pan0000_S12_R1",  # Invalid initials
+        "NGS123-12-382398-J3-M-VCP0R33-Pan0000_S12_R1",  # Invalid initials
+        "NGS123-12-382398-J-M-VCP0R33-Pan0000_S12_R1",  # Invalid sex
+        "NGS123-12-382398-J-M-A1-Pan0000_S12_R1",  # Invalid panel name
+        "NGS123-12-382398-JD-M-VCP0R33-Pan000a_S12_R1",  # Invalid pan no
+        "NGS123-12-382398-JD-M-VCP0R33-Pan_S12_R1",  # Invalid pan no
+        "NGS123-12-382398-JD-M-VCP0R33-Pan1_S12_R1",  # Invalid pan no
+        "NGS123-12-382398-265254-Pn0000_S12_R1",  # Invalid pan no
+        "NGS123-12-382398-JD-M-VCP0R33-Pan12_S12_R1.v$f",  # Invalid characters in remainder of parsed string
+        "NGS514B-29-LE-VCP1R134StG-Pan4821",  # Not enough identifiers
+        "ONC22070-05-2232170-Pan4082",  # Not enough identifiers
+        "NGS123-12-382398-Pan0000_S12_R1",  # Not enough identifiers
+        "NGS514B-29-287637-M-VCP1R134StG-Pan4821",  # Not enough identifiers
+        "TSO123-00-234234-TOOLONGNAMEFORTSO-UP01-Pan4969",  # Name too long for tso requirements
+        "TSO22040-12-222704-NA-Pan5085",  # Disallowed id2
+        "ONC22067-01-NTCcon-57G-SWIFT57-Pan4082",  # Disallowed id1 and id2
+        "ONC22070-05-EK222662-2232170-SWIFT57-Pan4082",  # Disallowed id1
+        "TSO22040-48-T228291-HO4232-Pan5085",  # Disallowed id1 and id2
+        "ADX22050-01-221975-Mpx-FFPEControl-Pan4396",  # Disallowed id2
+        "SNP70-11-265254-4031238_805-DM-M-SNPIDv2-Pan4009",  # Disallowed id2
+        "ONC22067-02-000000-NT000-SWIFT57-Pan4082",  # Disallowed id2
+        "NGS372-22-611-NF-F-VCP2R208Via-Pan4011",  # ID1 too short
     ]
 
 
@@ -107,55 +107,55 @@ def invalid_dict_samples():
 @pytest.fixture
 def constituents():
     return [
-        ("SNP70_11_265254_4031238805_DM_M_SNPIDv2_Pan4009_RJZ_S12_R1", 'libraryprep', 'SNP70'),
-        ("SNP70_11_265254_4031238805_DM_M_SNPIDv2_Pan4009_RJZ_S12_R1", 'samplecount', '11'),
-        ("SNP70_11_265254_4031238805_DM_M_SNPIDv2_Pan4009_RJZ_S12_R1", 'id1', '265254'),
-        ("SNP70_11_265254_4031238805_DM_M_SNPIDv2_Pan4009_RJZ_S12_R1", 'id2', '4031238805'),
-        ("SNP70_11_265254_4031238805_DM_M_SNPIDv2_Pan4009_RJZ_S12_R1", 'initials', 'DM'),
-        ("SNP70_11_265254_4031238805_DM_M_SNPIDv2_Pan4009_RJZ_S12_R1", 'sex', 'M'),
-        ("SNP70_11_265254_4031238805_DM_M_SNPIDv2_Pan4009_RJZ_S12_R1", 'panelname', 'SNPIDv2'),
-        ("SNP70_11_265254_4031238805_DM_M_SNPIDv2_Pan4009_RJZ_S12_R1", 'panelnumber', 'Pan4009'),
-        ("SNP70_11_265254_4031238805_DM_M_SNPIDv2_Pan4009_RJZ_S12_R1", 'ods', 'RJZ'),
-        ("SNP70_11_265254_4031238805_DM_M_SNPIDv2_Pan4009_RJZ_S12_R1", 'samplesheetindex', 'S12'),
-        ("SNP70_11_265254_4031238805_DM_M_SNPIDv2_Pan4009_RJZ_S12_R1", 'readnumber', 'R1'),
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000.fasta", 'initials', 'JD'),
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000.fasta", 'sex', 'M'),
-        ("NGS123_12_382398_265254_VCP0R33_Pan0000_S12_R1", 'sex', None)
+        ("SNP70-11-265254-4031238805-DM-M-SNPIDv2-Pan4009-RJZ_S12_R1", 'libraryprep', 'SNP70'),
+        ("SNP70-11-265254-4031238805-DM-M-SNPIDv2-Pan4009-RJZ_S12_R1", 'samplecount', '11'),
+        ("SNP70-11-265254-4031238805-DM-M-SNPIDv2-Pan4009-RJZ_S12_R1", 'id1', '265254'),
+        ("SNP70-11-265254-4031238805-DM-M-SNPIDv2-Pan4009-RJZ_S12_R1", 'id2', '4031238805'),
+        ("SNP70-11-265254-4031238805-DM-M-SNPIDv2-Pan4009-RJZ_S12_R1", 'initials', 'DM'),
+        ("SNP70-11-265254-4031238805-DM-M-SNPIDv2-Pan4009-RJZ_S12_R1", 'sex', 'M'),
+        ("SNP70-11-265254-4031238805-DM-M-SNPIDv2-Pan4009-RJZ_S12_R1", 'panelname', 'SNPIDv2'),
+        ("SNP70-11-265254-4031238805-DM-M-SNPIDv2-Pan4009-RJZ_S12_R1", 'panelnumber', 'Pan4009'),
+        ("SNP70-11-265254-4031238805-DM-M-SNPIDv2-Pan4009-RJZ_S12_R1", 'ods', 'RJZ'),
+        ("SNP70-11-265254-4031238805-DM-M-SNPIDv2-Pan4009-RJZ_S12_R1", 'samplesheetindex', 'S12'),
+        ("SNP70-11-265254-4031238805-DM-M-SNPIDv2-Pan4009-RJZ_S12_R1", 'readnumber', 'R1'),
+        ("NGS123-12-382398-JD-M-VCP0R33-Pan0000.fasta", 'initials', 'JD'),
+        ("NGS123-12-382398-JD-M-VCP0R33-Pan0000.fasta", 'sex', 'M'),
+        ("NGS123-12-382398-265254-VCP0R33-Pan0000_S12_R1", 'sex', None)
     ]
 
 @pytest.fixture
 def file_names():
     return [
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.realigned.bam",
+        ("NGS123-12-382398-JD-M-VCP0R33-Pan0000_S12_R1_001.realigned.bam",
          True, 'bam'),
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.realigned.bam",
+        ("NGS123-12-382398-JD-M-VCP0R33-Pan0000_S12_R1_001.realigned.bam",
          False, 'bam'),
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.re.xxx.vcf.gz",
+        ("NGS123-12-382398-JD-M-VCP0R33-Pan0000_S12_R1_001.re.xxx.vcf.gz",
          True, 'vcf.gz'),
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.re.xxx.vcf.gz",
+        ("NGS123-12-382398-JD-M-VCP0R33-Pan0000_S12_R1_001.re.xxx.vcf.gz",
          False, 'vcf'),
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R2_001.fastq.gz",
+        ("NGS123-12-382398-JD-M-VCP0R33-Pan0000_S12_R2_001.fastq.gz",
          True, 'fastq.gz'),
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R2_001.fastq.gz",
+        ("NGS123-12-382398-JD-M-VCP0R33-Pan0000_S12_R2_001.fastq.gz",
          False, 'fastq'),
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.haplotyper.vcf",
+        ("NGS123-12-382398-JD-M-VCP0R33-Pan0000_S12_R1_001.haplotyper.vcf",
          True, 'vcf'),
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.haplotyper.vcf",
+        ("NGS123-12-382398-JD-M-VCP0R33-Pan0000_S12_R1_001.haplotyper.vcf",
          False, 'vcf'),
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000.haplotyper.vcf",
+        ("NGS123-12-382398-JD-M-VCP0R33-Pan0000.haplotyper.vcf",
          False, 'vcf'),
     ]
 
 @pytest.fixture
 def file_paths():
     return [
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001.haplotyper.vcf",
+        ("NGS123-12-382398-JD-M-VCP0R33-Pan0000_S12_R1_001.haplotyper.vcf",
          True, ''),
-        ("/some/path/NGS123_12_382398_JD_M_VCP0R33_Pan0000.haplotyper.vcf",
+        ("/some/path/NGS123-12-382398-JD-M-VCP0R33-Pan0000.haplotyper.vcf",
          True, "/some/path"),
-        ("/some/path/NGS123_12_382398_JD_M_VCP0R33_Pan0000",
+        ("/some/path/NGS123-12-382398-JD-M-VCP0R33-Pan0000",
          True, "/some/path"),
-        ("NGS123_12_382398_JD_M_VCP0R33_Pan0000_S12_R1_001",
+        ("NGS123-12-382398-JD-M-VCP0R33-Pan0000_S12_R1_001",
          False, ''),
     ]
 
@@ -224,8 +224,8 @@ def field_validation():
 @pytest.fixture
 def multiple_errors():
     return [
-        ("NG123_12_324_265254_VCP0R33_Pan0000_S12", ['LibraryPrep name invalid', 'Specimen/DNA number invalid']),
-        ("NG3_12_388_252_CRC_Pan_S12", ['LibraryPrep name invalid',
+        ("NG123-12-324-265254-VCP0R33-Pan0000_S12", ['LibraryPrep name invalid', 'Specimen/DNA number invalid']),
+        ("NG3-12-388-252-CRC-Pan_S12", ['LibraryPrep name invalid',
                                         'Specimen/DNA number invalid', 'Pan Number invalid']),
     ]
 
@@ -246,7 +246,7 @@ def test_invalid_dict_samples(invalid_dict_samples):
 
 
 def test_field_validation(field_validation):
-    s = "NGS123_12_382398_003245_VCP0R33_Pan0000_S12_R1"
+    s = "NGS123-12-382398-003245-VCP0R33-Pan0000_S12_R1"
     for match_exception, field, value in field_validation:
         sample = Sample.from_string(s)
         if match_exception:
